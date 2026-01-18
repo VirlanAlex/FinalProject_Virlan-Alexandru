@@ -1,6 +1,7 @@
 package tests;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -43,5 +44,8 @@ public class LogIn {
         wait.until(ExpectedConditions.urlContains("/account"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/account"), "Login failed: user was not redirected to account page");
 
+        WebElement logoLink = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a.navbar-brand[title='Practice Software Testing - Toolshop'][href='/']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", logoLink);
+        Assert.assertTrue(driver.getCurrentUrl().equals("https://practicesoftwaretesting.com/"), "Logo click did not redirect to homepage. Current URL: " + driver.getCurrentUrl());
     }
 }

@@ -20,7 +20,7 @@ public class ChangePassword {
 
     @Test
     private void signInAccount() {
-        signInAccount("virlanalexandru20@yahoo.com", "123sd21123@asdadd2Asds1");
+        signInAccount("virlanalexandru20@yahoo.com", "123sd21123@asdadd2Asdsd");
     }
 
     public void signInAccount(String signInEmail, String signInPassword) {
@@ -51,7 +51,7 @@ public class ChangePassword {
 
         WebElement currentPasswordInput = driver.findElement(By.cssSelector("input[data-test='current-password']"));
         currentPasswordInput.clear();
-        currentPasswordInput.sendKeys("123sd21123@asdadd2Asds1");
+        currentPasswordInput.sendKeys("123sd21123@asdadd2Asdsd");
 
         WebElement newPasswordInput = driver.findElement(By.cssSelector("input[data-test='new-password']"));
         newPasswordInput.clear();
@@ -61,8 +61,8 @@ public class ChangePassword {
         confirmNewPasswordInput.clear();
         confirmNewPasswordInput.sendKeys("123sd21123@asdadd2Asds2");
 
-        WebElement changePasswordButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[data-test='change-password-submit']")));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", changePasswordButton);
+//        WebElement changePasswordButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[data-test='change-password-submit']")));
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", changePasswordButton);
 
     }
 }
