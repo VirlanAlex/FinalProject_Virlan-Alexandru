@@ -1,0 +1,41 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class CheckoutPage extends BasePage {
+    private final By proceedStep1Button = By.cssSelector("button[data-test='proceed-1']");
+    private final By proceedStep2Button = By.cssSelector("button[data-test='proceed-2']");
+    private final By proceedStep3Button = By.cssSelector("button[data-test='proceed-3']");
+    private final By paymentMethodSelect = By.cssSelector("select[data-test='payment-method']");
+    private final By finishButton = By.cssSelector("button[data-test='finish']");
+    private final By successMessage = By.cssSelector("div[data-test='payment-success-message']");
+
+    public CheckoutPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public void proceedStep1() {
+        elements.click(proceedStep1Button);
+    }
+
+    public void proceedStep2() {
+        elements.click(proceedStep2Button);
+    }
+
+    public void proceedStep3() {
+        elements.click(proceedStep3Button);
+    }
+
+    public void selectCashOnDelivery() {
+        elements.selectByValue(paymentMethodSelect, "cash-on-delivery");
+    }
+
+    public void finishOrder() {
+        elements.click(finishButton);
+    }
+
+    public String getSuccessMessage() {
+        return elements.visible(successMessage).getText().trim();
+    }
+}

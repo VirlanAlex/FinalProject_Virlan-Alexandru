@@ -1,0 +1,85 @@
+package helpMethods;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class ElementsMethod {
+
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+
+    private static final Duration DEFAULT_WAIT = Duration.ofSeconds(10);
+
+    public ElementsMethod(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, DEFAULT_WAIT);
+    }
+
+    public WebElement presence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    public WebElement visible(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public WebElement clickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public void click(By locator) {
+        clickable(locator).click();
+    }
+
+    public void jsClick(By locator) {
+        WebElement el = clickable(locator);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
+    }
+
+    public void type(By locator, String text) {
+        WebElement el = visible(locator);
+        el.clear();
+        el.sendKeys(text);
+    }
+
+    public void typeNoClear(By locator, String text) {
+        visible(locator).sendKeys(text);
+    }
+
+    public void clear(By locator) {
+        visible(locator).clear();
+    }
+
+    public void waitUrlContains(String partial) {
+        wait.until(ExpectedConditions.urlContains(partial));
+    }
+
+    public void selectByValue(By locator, String value) {
+        WebElement dropdown = clickable(locator);
+        Select select = new Select(dropdown);
+        select.selectByValue(value);
+
+        String actual = select.getFirstSelectedOption().getAttribute("value");
+        if (!value.equals(actual)) {
+            throw new AssertionError("Dropdown selection failed. Expected: " + value + " but was: " + actual);
+        }
+    }
+
+    public String waitNonEmptyText(By locator) {
+        return wait.until(d -> {
+            WebElement el = d.findElement(locator);
+            String t = el.getText();
+            if (t == null) return null;
+            t = t.trim();
+            return t.isEmpty() ? null : t;
+        });
+    }
+}
+
