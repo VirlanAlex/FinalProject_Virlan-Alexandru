@@ -13,7 +13,6 @@ import java.time.Duration;
 
         private final WebDriver driver;
         private final WebDriverWait wait;
-
         private static final Duration ALERT_WAIT = Duration.ofSeconds(2);
 
         public AlertMethods(WebDriver driver) {

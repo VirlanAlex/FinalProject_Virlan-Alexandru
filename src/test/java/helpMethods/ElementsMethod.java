@@ -81,5 +81,21 @@ public class ElementsMethod {
             return t.isEmpty() ? null : t;
         });
     }
+    public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
+        wait.until(condition);
+    }
+    public boolean isPresent(By locator) {
+        return !driver.findElements(locator).isEmpty();
+    }
+
+    public String firstText(By locator) {
+        return isPresent(locator) ? driver.findElements(locator).get(0).getText().trim() : "";
+    }
+    public String getValue(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return element.getAttribute("value");
+    }
+
+
 }
 

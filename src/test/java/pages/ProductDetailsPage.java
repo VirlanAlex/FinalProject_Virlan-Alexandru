@@ -8,7 +8,6 @@ public class ProductDetailsPage extends BasePage {
     public ProductDetailsPage(WebDriver driver) {
         super(driver);
     }
-
     public void addToCart() {
         elements.click(addToCartButton);
     }

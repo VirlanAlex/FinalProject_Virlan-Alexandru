@@ -1,64 +1,42 @@
 package tests;
 
-import pages.*;
+import helpMethods.AlertMethods;
 import modelObject.UserModel;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import java.time.Duration;
-import helpMethods.AlertMethods;
+import pages.*;
 import sharedData.SharedData;
 
-public class BuyWithLogIn {
-    public WebDriver driver;
+public class BuyWithLogIn extends SharedData {
 
     @Test
-    public void signInAccount() {
+    public void buyWithLogin() {
+        // LOGIN determinist
+        driver.get(url("/auth/login"));
+        UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
+        new SignInPage(driver).loginAndAssert(user, getData().getAccountUrlPart());
 
-        SharedData data = new SharedData();
-        UserModel user = new UserModel(data.getValidEmail(), data.getValidPassword());
-        signInAccount(user, data);
-    }
-    public void signInAccount(UserModel user, SharedData data) {
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");
-        options.addArguments("--start-maximized");
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-        driver.get(data.getBaseUrl());
         HeaderComponent header = new HeaderComponent(driver);
-        SignInPage signInPage = new SignInPage(driver);
+        HomePage homePage = new HomePage(driver);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);
-        HomePage homePage = new HomePage(driver);
-
-        header.clickSignIn();
-        signInPage.login(user);
-        signInPage.waitRedirectTo(data.getAccountUrlPart());
-
-        Assert.assertTrue(driver.getCurrentUrl().contains(data.getAccountUrlPart()), "Login failed: user was not redirected to account page");
 
         header.clickLogo();
-
         homePage.openCombinationPliers();
         productDetailsPage.addToCart();
-
         header.clickCart();
 
         checkoutPage.proceedStep1();
         checkoutPage.proceedStep2();
+        checkoutPage.fillMissingAddressFieldsIfNeeded("725200", "Suceava");
         checkoutPage.proceedStep3();
         checkoutPage.selectCashOnDelivery();
         checkoutPage.finishOrder();
 
         String successText = checkoutPage.getSuccessMessage();
+        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(),
+                "Payment success message is incorrect or missing");
 
-        Assert.assertEquals(successText, data.getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
-
-        AlertMethods alertMethods = new AlertMethods(driver);
-        alertMethods.showAndValidateAndAccept(successText);
+        new AlertMethods(driver).showAndValidateAndAccept(successText);
     }
 }

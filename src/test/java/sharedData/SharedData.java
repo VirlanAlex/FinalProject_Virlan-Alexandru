@@ -1,55 +1,66 @@
 package sharedData;
 
+import modelObject.TestDataModel;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import utils.LogUtility;
+import utils.TestDataLoader;
+import java.time.Duration;
+
+
 public class SharedData {
-    private String baseUrl;
-    private String validEmail;
-    private String validPassword;
-    private String newPassword;
-    private String accountUrlPart;
-    private String checkoutUrlPart;
-    private String paymentSuccessMessage;
-    private String totpErrorMessage;
 
-    public SharedData() {
-        this.baseUrl = "https://practicesoftwaretesting.com/";
-        this.validEmail = "virlanalexandru20@yahoo.com";
-        this.validPassword = "123sd21123@asdadd2Asdsd";
-        this.newPassword = "123sd21123@asdadd2Asds2";
-        this.accountUrlPart = "/account";
-        this.checkoutUrlPart = "/checkout";
-        this.paymentSuccessMessage = "Payment was successful";
-        this.totpErrorMessage = "Invalid TOTP code. Please try again.";
+    protected WebDriver driver;
+    private TestDataModel data;
+    private String testName;
+
+    @BeforeMethod(alwaysRun = true)
+    public void prepareEnvironment() {
+        testName = this.getClass().getSimpleName();
+        LogUtility.startTest(testName);
+
+        data = TestDataLoader.load("testdata.json", TestDataModel.class);
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+        options.addArguments("--start-maximized");
+
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        if (headless) {
+            options.addArguments("--headless=new", "--window-size=1920,1080");
+        }
+
+        driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
+
+        // Start determinist: homepage
+        driver.get(url("/"));
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
+    @AfterMethod(alwaysRun = true)
+    public void clearEnvironment() {
+        try {
+            if (driver != null) driver.quit();
+        } finally {
+            LogUtility.finishTest(testName);
+        }
     }
 
-    public String getValidEmail() {
-        return validEmail;
+    protected String url(String path) {
+        String base = data.getBaseUrl();
+        if (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+        if (!path.startsWith("/")) path = "/" + path;
+        return base + path;
     }
 
-    public String getValidPassword() {
-        return validPassword;
+    public WebDriver getDriver() {
+        return driver;
     }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public String getAccountUrlPart() {
-        return accountUrlPart;
-    }
-
-    public String getCheckoutUrlPart() {
-        return checkoutUrlPart;
-    }
-
-    public String getPaymentSuccessMessage() {
-        return paymentSuccessMessage;
-    }
-
-    public String getTotpErrorMessage() {
-        return totpErrorMessage;
+    public TestDataModel getData() {
+        return data;
     }
 }

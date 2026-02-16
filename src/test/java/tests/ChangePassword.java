@@ -1,47 +1,37 @@
 package tests;
 
+import modelObject.UserModel;
+import org.testng.annotations.Test;
 import pages.HeaderComponent;
 import pages.ProfilePage;
 import pages.SignInPage;
-import modelObject.UserModel;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import sharedData.SharedData;
 
-import java.time.Duration;
-
-public class ChangePassword {
-    public WebDriver driver;
+public class ChangePassword extends SharedData {
 
     @Test
-    public void signInAccount() {
-        UserModel user = new UserModel("virlanalexandru20@yahoo.com", "123sd21123@asdadd2Asdsd", "123sd21123@asdadd2Asdsd", "123sd21123@asdadd2Asds2");
-        signInAccount(user);
-    }
+    public void changePassword() {
+        driver.get(url("/auth/login"));
 
-    public void signInAccount(UserModel user) {
+        // user pentru login
+        UserModel loginUser = new UserModel(getData().getValidEmail(), getData().getValidPassword());
+        new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");
-        options.addArguments("--start-maximized");
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-        driver.get("https://practicesoftwaretesting.com/");
+        // user pentru change password (constructorul tău cere current/new)
+        UserModel cpUser = new UserModel(
+                getData().getValidEmail(),
+                getData().getValidPassword(),
+                getData().getValidPassword(),
+                getData().getNewPassword()
+        );
+
         HeaderComponent header = new HeaderComponent(driver);
-        SignInPage signInPage = new SignInPage(driver);
         ProfilePage profilePage = new ProfilePage(driver);
 
-        header.clickSignIn();
-        signInPage.login(user);
-        signInPage.waitRedirectTo("/account");
-
-        Assert.assertTrue(driver.getCurrentUrl().contains("/account"), "Login failed: user was not redirected to account page");
-
         header.clickProfile();
+        profilePage.changePassword(cpUser);
 
-        profilePage.changePassword(user);
-
+        // aici nu ai în cod un locator de success, deci nu inventez.
+        // Testul ăsta îți validează flow-ul fără să pice (și tu poți adăuga apoi assert pe mesaj).
     }
 }
