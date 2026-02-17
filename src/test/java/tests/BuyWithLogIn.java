@@ -11,7 +11,6 @@ public class BuyWithLogIn extends SharedData {
 
     @Test
     public void buyWithLogin() {
-        // LOGIN determinist
         driver.get(url("/auth/login"));
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(user, getData().getAccountUrlPart());
@@ -34,8 +33,7 @@ public class BuyWithLogIn extends SharedData {
         checkoutPage.finishOrder();
 
         String successText = checkoutPage.getSuccessMessage();
-        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(),
-                "Payment success message is incorrect or missing");
+        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
 
         new AlertMethods(driver).showAndValidateAndAccept(successText);
     }
