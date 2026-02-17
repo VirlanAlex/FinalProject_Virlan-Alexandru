@@ -43,7 +43,6 @@ import java.time.Duration;
             }
         }
 
-        // 1-liner pentru cazul tău: afișează alert, validează text, accept
         public void showAndValidateAndAccept(String message) {
             showAlertWithText(message);
             String actual = getAlertText();

@@ -1,5 +1,7 @@
 package helpMethods;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -14,6 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ElementsMethod {
+
+    private static final Logger logger = LogManager.getLogger(ElementsMethod.class);
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -38,33 +42,40 @@ public class ElementsMethod {
     }
 
     public void click(By locator) {
+        logger.debug("Click: {}", locator);
         clickable(locator).click();
     }
 
     public void jsClick(By locator) {
+        logger.debug("JS Click: {}", locator);
         WebElement el = clickable(locator);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
     }
 
     public void type(By locator, String text) {
+        logger.debug("Type into {} | value='{}'", locator, safeValue(locator, text));
         WebElement el = visible(locator);
         el.clear();
         el.sendKeys(text);
     }
 
     public void typeNoClear(By locator, String text) {
+        logger.debug("Type (no clear) into {} | value='{}'", locator, safeValue(locator, text));
         visible(locator).sendKeys(text);
     }
 
     public void clear(By locator) {
+        logger.debug("Clear: {}", locator);
         visible(locator).clear();
     }
 
     public void waitUrlContains(String partial) {
+        logger.debug("Wait URL contains: '{}'", partial);
         wait.until(ExpectedConditions.urlContains(partial));
     }
 
     public void selectByValue(By locator, String value) {
+        logger.debug("Select by value on {} | value='{}'", locator, value);
         WebElement dropdown = clickable(locator);
         Select select = new Select(dropdown);
         select.selectByValue(value);
@@ -99,13 +110,13 @@ public class ElementsMethod {
         return element.getAttribute("value");
     }
 
-
-
     public void pressTab(By locator) {
+        logger.debug("Press TAB on: {}", locator);
         visible(locator).sendKeys(Keys.TAB);
     }
 
     public void waitUntilValueEquals(By locator, String expected) {
+        logger.debug("Wait value equals on {} | expected='{}'", locator, expected);
         wait.until(d -> {
             WebElement el = d.findElement(locator);
             String v = el.getAttribute("value");
@@ -113,10 +124,8 @@ public class ElementsMethod {
         });
     }
 
-    /**
-     * Waits until the input value stops changing for a short period (useful for async auto-fill after login).
-     */
     public void waitUntilValueStabilizes(By locator) {
+        logger.debug("Wait value stabilizes on: {}", locator);
         waitUntilValueStabilizes(locator, Duration.ofMillis(700), DEFAULT_WAIT);
     }
 
@@ -139,6 +148,18 @@ public class ElementsMethod {
             }
             return (now - lastChange.get()) >= stableFor.toMillis();
         });
+    }
+
+    private String safeValue(By locator, String value) {
+        if (value == null) return "null";
+
+        String loc = String.valueOf(locator).toLowerCase();
+        if (loc.contains("password") || loc.contains("passwd") || loc.contains("secret") || loc.contains("token")) {
+            return "***";
+        }
+
+        if (value.length() > 120) return value.substring(0, 120) + "...";
+        return value;
     }
 
 }

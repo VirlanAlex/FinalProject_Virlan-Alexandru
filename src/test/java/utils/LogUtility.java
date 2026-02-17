@@ -17,6 +17,14 @@ public class LogUtility {
         logger.info("{}", message);
     }
 
+    public static void debugLog(String message){
+        logger.debug("{}", message);
+    }
+
+    public static void warnLog(String message){
+        logger.warn("{}", message);
+    }
+
     public static void errorLog(String message){
         logger.error("{}", message);
     }

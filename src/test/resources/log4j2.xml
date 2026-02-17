@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+
+    <Properties>
+        <Property name="LOG_DIR">logs</Property>
+    </Properties>
+
     <Appenders>
+
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level - %msg%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %c{1} - %msg%n"/>
         </Console>
+
+        <RollingFile name="FileAppender"
+                     fileName="${LOG_DIR}/test.log"
+                     filePattern="${LOG_DIR}/test-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+
     </Appenders>
 
     <Loggers>
+        <Logger name="helpMethods" level="debug"/>
+
         <Root level="info">
             <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
         </Root>
     </Loggers>
+
 </Configuration>
