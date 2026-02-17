@@ -31,20 +31,47 @@ public class CheckoutPage extends BasePage {
         elements.click(proceedStep3Button);
     }
 
+    
     public void fillMissingAddressFieldsIfNeeded(String postalCode, String state) {
 
         if (!elements.isPresent(postalCodeInput) || !elements.isPresent(stateInput)) {
             return;
         }
 
-        if (elements.getValue(postalCodeInput).isBlank()) {
-            elements.type(postalCodeInput, postalCode);
+        // After login, the checkout form may auto-fill asynchronously and overwrite fields.
+        // First, wait for the auto-fill to settle.
+        elements.visible(postalCodeInput);
+        elements.visible(stateInput);
+        elements.waitUntilValueStabilizes(postalCodeInput);
+        elements.waitUntilValueStabilizes(stateInput);
+
+        setIfBlankAndEnsure(postalCodeInput, postalCode);
+        setIfBlankAndEnsure(stateInput, state);
+    }
+
+    private void setIfBlankAndEnsure(By locator, String value) {
+        String current = elements.getValue(locator);
+        if (current != null && !current.isBlank()) {
+            return;
         }
 
-        if (elements.getValue(stateInput).isBlank()) {
-            elements.type(stateInput, state);
+        // Try twice in case the form overwrites once after blur.
+        for (int i = 0; i < 2; i++) {
+            elements.type(locator, value);
+            elements.pressTab(locator);
+
+            try {
+                elements.waitUntilValueEquals(locator, value);
+                elements.waitUntilValueStabilizes(locator);
+                return;
+            } catch (RuntimeException ignored) {
+                // one more retry
+            }
         }
+
+        throw new AssertionError("Field value could not be stabilized for locator: " + locator);
     }
+
 
     public void selectCashOnDelivery() {
         elements.selectByValue(paymentMethodSelect, "cash-on-delivery");

@@ -2,6 +2,7 @@ package helpMethods;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,6 +10,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ElementsMethod {
 
@@ -97,5 +100,45 @@ public class ElementsMethod {
     }
 
 
-}
 
+    public void pressTab(By locator) {
+        visible(locator).sendKeys(Keys.TAB);
+    }
+
+    public void waitUntilValueEquals(By locator, String expected) {
+        wait.until(d -> {
+            WebElement el = d.findElement(locator);
+            String v = el.getAttribute("value");
+            return expected.equals(v);
+        });
+    }
+
+    /**
+     * Waits until the input value stops changing for a short period (useful for async auto-fill after login).
+     */
+    public void waitUntilValueStabilizes(By locator) {
+        waitUntilValueStabilizes(locator, Duration.ofMillis(700), DEFAULT_WAIT);
+    }
+
+    public void waitUntilValueStabilizes(By locator, Duration stableFor, Duration timeout) {
+        WebDriverWait customWait = new WebDriverWait(driver, timeout);
+        customWait.pollingEvery(Duration.ofMillis(100));
+
+        AtomicReference<String> lastValue = new AtomicReference<>(null);
+        AtomicLong lastChange = new AtomicLong(System.currentTimeMillis());
+
+        customWait.until(d -> {
+            WebElement el = d.findElement(locator);
+            String current = el.getAttribute("value");
+            String previous = lastValue.getAndSet(current);
+
+            long now = System.currentTimeMillis();
+            if (previous == null || !previous.equals(current)) {
+                lastChange.set(now);
+                return false;
+            }
+            return (now - lastChange.get()) >= stableFor.toMillis();
+        });
+    }
+
+}
