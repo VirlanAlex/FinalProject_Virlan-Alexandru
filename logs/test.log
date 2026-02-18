@@ -1,0 +1,490 @@
+2026-02-17 18:02:02 [main] INFO  utils.LogUtility - ***** Execution started: BuyWithLogIn *****
+2026-02-17 18:02:04 [main] INFO  utils.LogUtility - Test flow: Buy with login (login -> product -> cart -> checkout -> payment)
+2026-02-17 18:02:04 [main] INFO  utils.LogUtility - Open login page
+2026-02-17 18:02:04 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-17 18:02:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-17 18:02:05 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:02:05 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 18:02:05 [main] INFO  utils.LogUtility - Login validated
+2026-02-17 18:02:05 [main] INFO  pages.HeaderComponent - Header: click Logo
+2026-02-17 18:02:05 [main] DEBUG helpMethods.ElementsMethod - JS Click: By.cssSelector: a.navbar-brand[title='Practice Software Testing - Toolshop'][href='/']
+2026-02-17 18:02:06 [main] INFO  utils.LogUtility - Navigate back to homepage
+2026-02-17 18:02:06 [main] INFO  pages.HomePage - Home: open product 'Combination Pliers'
+2026-02-17 18:02:06 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: img.card-img-top[alt='Combination Pliers']
+2026-02-17 18:02:06 [main] INFO  utils.LogUtility - Open product and add to cart
+2026-02-17 18:02:06 [main] INFO  pages.ProductDetailsPage - Product: add to cart
+2026-02-17 18:02:06 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='add-to-cart']
+2026-02-17 18:02:07 [main] INFO  pages.HeaderComponent - Header: open Cart
+2026-02-17 18:02:07 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: svg[data-icon='cart-shopping']:not(button[data-test='add-to-cart'] svg)
+2026-02-17 18:02:08 [main] INFO  utils.LogUtility - Checkout Step 1
+2026-02-17 18:02:08 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 1
+2026-02-17 18:02:08 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-1']
+2026-02-17 18:02:08 [main] INFO  utils.LogUtility - Checkout Step 2 (Address)
+2026-02-17 18:02:08 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 2 (Address)
+2026-02-17 18:02:08 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-2']
+2026-02-17 18:02:09 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-17 18:02:09 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-17 18:02:10 [main] INFO  pages.CheckoutPage - Checkout: ensure address fields are filled (postal_code/state)
+2026-02-17 18:02:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: postal_code | value='725200'
+2026-02-17 18:02:10 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: postal_code
+2026-02-17 18:02:10 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: postal_code | expected='725200'
+2026-02-17 18:02:10 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-17 18:02:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: state | value='Suceava'
+2026-02-17 18:02:11 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: state
+2026-02-17 18:02:11 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: state | expected='Suceava'
+2026-02-17 18:02:11 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-17 18:02:12 [main] INFO  utils.LogUtility - Checkout Step 3 (Payment)
+2026-02-17 18:02:12 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 3 (Payment)
+2026-02-17 18:02:12 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-3']
+2026-02-17 18:02:12 [main] INFO  pages.CheckoutPage - Checkout: select payment method = cash-on-delivery
+2026-02-17 18:02:12 [main] DEBUG helpMethods.ElementsMethod - Select by value on By.cssSelector: select[data-test='payment-method'] | value='cash-on-delivery'
+2026-02-17 18:02:12 [main] INFO  pages.CheckoutPage - Checkout: finish order
+2026-02-17 18:02:12 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='finish']
+2026-02-17 18:02:13 [main] INFO  utils.LogUtility - Verify success message is displayed
+2026-02-17 18:02:13 [main] INFO  utils.LogUtility - ***** Execution finished: BuyWithLogIn *****
+2026-02-17 18:02:46 [main] INFO  utils.LogUtility - ***** Execution started: BuyWithoutLogIn *****
+2026-02-17 18:02:48 [main] INFO  utils.LogUtility - Test flow: Buy without login (product -> cart -> login in checkout -> payment)
+2026-02-17 18:02:48 [main] INFO  utils.LogUtility - Open homepage
+2026-02-17 18:02:48 [main] INFO  pages.HomePage - Home: open product 'Combination Pliers'
+2026-02-17 18:02:48 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: img.card-img-top[alt='Combination Pliers']
+2026-02-17 18:02:49 [main] INFO  utils.LogUtility - Add product to cart
+2026-02-17 18:02:49 [main] INFO  pages.ProductDetailsPage - Product: add to cart
+2026-02-17 18:02:49 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='add-to-cart']
+2026-02-17 18:02:49 [main] INFO  pages.HeaderComponent - Header: open Cart
+2026-02-17 18:02:49 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: svg[data-icon='cart-shopping']:not(button[data-test='add-to-cart'] svg)
+2026-02-17 18:02:50 [main] INFO  utils.LogUtility - Proceed to checkout Step 1
+2026-02-17 18:02:50 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 1
+2026-02-17 18:02:50 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-1']
+2026-02-17 18:02:51 [main] INFO  utils.LogUtility - Login during checkout
+2026-02-17 18:02:51 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-17 18:02:51 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-17 18:02:51 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:02:51 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 18:02:51 [main] INFO  utils.LogUtility - Proceed to checkout Step 2 (Address)
+2026-02-17 18:02:51 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 2 (Address)
+2026-02-17 18:02:51 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-2']
+2026-02-17 18:02:52 [main] INFO  utils.LogUtility - Fill missing address fields if needed
+2026-02-17 18:02:52 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-17 18:02:52 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-17 18:02:53 [main] INFO  pages.CheckoutPage - Checkout: ensure address fields are filled (postal_code/state)
+2026-02-17 18:02:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: postal_code | value='725200'
+2026-02-17 18:02:53 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: postal_code
+2026-02-17 18:02:53 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: postal_code | expected='725200'
+2026-02-17 18:02:53 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-17 18:02:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: state | value='Suceava'
+2026-02-17 18:02:54 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: state
+2026-02-17 18:02:54 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: state | expected='Suceava'
+2026-02-17 18:02:54 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-17 18:02:55 [main] INFO  utils.LogUtility - Proceed to checkout Step 3 (Payment)
+2026-02-17 18:02:55 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 3 (Payment)
+2026-02-17 18:02:55 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-3']
+2026-02-17 18:02:55 [main] INFO  pages.CheckoutPage - Checkout: select payment method = cash-on-delivery
+2026-02-17 18:02:55 [main] DEBUG helpMethods.ElementsMethod - Select by value on By.cssSelector: select[data-test='payment-method'] | value='cash-on-delivery'
+2026-02-17 18:02:55 [main] INFO  pages.CheckoutPage - Checkout: finish order
+2026-02-17 18:02:55 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='finish']
+2026-02-17 18:02:56 [main] INFO  utils.LogUtility - Verify success message is displayed
+2026-02-17 18:02:56 [main] INFO  utils.LogUtility - ***** Execution finished: BuyWithoutLogIn *****
+2026-02-17 18:03:31 [main] INFO  utils.LogUtility - ***** Execution started: ChangePassword *****
+2026-02-17 18:03:33 [main] INFO  utils.LogUtility - Test flow: Change password
+2026-02-17 18:03:34 [main] INFO  utils.LogUtility - Open login page
+2026-02-17 18:03:34 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-17 18:03:34 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-17 18:03:34 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:03:34 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 18:03:36 [main] INFO  utils.LogUtility - Login validated
+2026-02-17 18:03:36 [main] INFO  utils.LogUtility - Navigate to Profile
+2026-02-17 18:03:36 [main] INFO  pages.HeaderComponent - Header: click Profile
+2026-02-17 18:03:36 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: [data-test='nav-profile']
+2026-02-17 18:03:36 [main] INFO  utils.LogUtility - Submit change password form
+2026-02-17 18:03:36 [main] INFO  pages.ProfilePage - Profile: change password
+2026-02-17 18:03:36 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='current-password'] | value='***'
+2026-02-17 18:03:36 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='new-password'] | value='***'
+2026-02-17 18:03:36 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='new-password-confirm'] | value='***'
+2026-02-17 18:03:36 [main] DEBUG helpMethods.ElementsMethod - JS Click: By.cssSelector: button[data-test='change-password-submit']
+2026-02-17 18:03:36 [main] INFO  utils.LogUtility - ***** Execution finished: ChangePassword *****
+2026-02-17 18:04:18 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-17 18:04:19 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-17 18:04:19 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771344259806@yahoo.com
+2026-02-17 18:04:19 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-17 18:04:19 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-17 18:04:19 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-17 18:04:19 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-17 18:04:19 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-17 18:04:20 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-17 18:04:20 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771344259806@yahoo.com)
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-17 18:04:20 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-17 18:04:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771344259806@yahoo.com'
+2026-02-17 18:04:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:04:21 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-17 18:04:21 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-17 18:04:41 [main] INFO  utils.LogUtility - ***** Execution started: LogIn *****
+2026-02-17 18:04:42 [main] INFO  utils.LogUtility - Test flow: Login
+2026-02-17 18:04:42 [main] INFO  utils.LogUtility - Open login page
+2026-02-17 18:04:42 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-17 18:04:42 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-17 18:04:42 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:04:42 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 18:04:43 [main] INFO  utils.LogUtility - Login validated
+2026-02-17 18:04:43 [main] INFO  utils.LogUtility - ***** Execution finished: LogIn *****
+2026-02-17 18:04:57 [main] INFO  utils.LogUtility - ***** Execution started: SetUpTwoFactorAuthentication *****
+2026-02-17 18:04:58 [main] INFO  utils.LogUtility - Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)
+2026-02-17 18:04:58 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771344298968@yahoo.com
+2026-02-17 18:04:59 [main] INFO  utils.LogUtility - Open register form
+2026-02-17 18:04:59 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-17 18:04:59 [main] INFO  utils.LogUtility - Submit registration
+2026-02-17 18:04:59 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771344298968@yahoo.com)
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771344298968@yahoo.com'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:04:59 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-17 18:05:01 [main] INFO  utils.LogUtility - Login with newly created user
+2026-02-17 18:05:01 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=virlanalexandru261771344298968@yahoo.com)
+2026-02-17 18:05:01 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771344298968@yahoo.com'
+2026-02-17 18:05:01 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 18:05:01 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 18:05:01 [main] INFO  utils.LogUtility - Navigate to Profile
+2026-02-17 18:05:01 [main] INFO  pages.HeaderComponent - Header: click Profile
+2026-02-17 18:05:01 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: [data-test='nav-profile']
+2026-02-17 18:05:01 [main] INFO  utils.LogUtility - Read TOTP secret and validate format
+2026-02-17 18:05:01 [main] INFO  pages.ProfilePage - Profile: get TOTP secret
+2026-02-17 18:05:02 [main] INFO  utils.LogUtility - Generate TOTP code, submit and verify error message
+2026-02-17 18:05:02 [main] INFO  pages.ProfilePage - Profile: enter TOTP code
+2026-02-17 18:05:02 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='totp-code'] | value='GBDWXXHSBOZCKSRX'
+2026-02-17 18:05:02 [main] INFO  pages.ProfilePage - Profile: verify TOTP code
+2026-02-17 18:05:02 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='verify-totp']
+2026-02-17 18:05:03 [main] INFO  utils.LogUtility - Verify TOTP error message
+2026-02-17 18:05:03 [main] INFO  utils.LogUtility - ***** Execution finished: SetUpTwoFactorAuthentication *****
+2026-02-17 20:27:07 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-17 20:27:09 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-17 20:27:09 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771352829290@yahoo.com
+2026-02-17 20:27:09 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-17 20:27:09 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-17 20:27:09 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-17 20:27:09 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-17 20:27:09 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-17 20:27:10 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-17 20:27:10 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771352829290@yahoo.com)
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771352829290@yahoo.com'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 20:27:10 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-17 20:27:11 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-17 20:31:19 [main] INFO  utils.LogUtility - ***** Execution started: SetUpTwoFactorAuthentication *****
+2026-02-17 20:31:21 [main] INFO  utils.LogUtility - Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)
+2026-02-17 20:31:21 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771353081031@yahoo.com
+2026-02-17 20:31:21 [main] INFO  utils.LogUtility - Open register form
+2026-02-17 20:31:21 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-17 20:31:21 [main] INFO  utils.LogUtility - Submit registration
+2026-02-17 20:31:21 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771353081031@yahoo.com)
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-17 20:31:21 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771353081031@yahoo.com'
+2026-02-17 20:31:22 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 20:31:22 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-17 20:31:22 [main] INFO  utils.LogUtility - Login with newly created user
+2026-02-17 20:31:22 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=virlanalexandru261771353081031@yahoo.com)
+2026-02-17 20:31:22 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771353081031@yahoo.com'
+2026-02-17 20:31:22 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-17 20:31:23 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-17 20:31:23 [main] INFO  utils.LogUtility - Navigate to Profile
+2026-02-17 20:31:23 [main] INFO  pages.HeaderComponent - Header: click Profile
+2026-02-17 20:31:23 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: [data-test='nav-profile']
+2026-02-17 20:31:23 [main] INFO  utils.LogUtility - Read TOTP secret and validate format
+2026-02-17 20:31:23 [main] INFO  pages.ProfilePage - Profile: get TOTP secret
+2026-02-17 20:31:24 [main] INFO  utils.LogUtility - Generate TOTP code, submit and verify error message
+2026-02-17 20:31:24 [main] INFO  pages.ProfilePage - Profile: enter TOTP code
+2026-02-17 20:31:24 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='totp-code'] | value='MKDGQPOA656CSSJ6'
+2026-02-17 20:31:24 [main] INFO  pages.ProfilePage - Profile: verify TOTP code
+2026-02-17 20:31:24 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='verify-totp']
+2026-02-17 20:31:25 [main] INFO  utils.LogUtility - Verify TOTP error message
+2026-02-17 20:31:25 [main] INFO  utils.LogUtility - ***** Execution finished: SetUpTwoFactorAuthentication *****
+2026-02-18 13:36:12 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:36:12 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:36:52 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:36:54 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-18 13:36:54 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771414614701@yahoo.com
+2026-02-18 13:36:54 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-18 13:36:54 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-18 13:36:54 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-18 13:36:54 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 13:36:54 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 13:36:55 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-18 13:36:55 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771414614701@yahoo.com)
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 13:36:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771414614701@yahoo.com'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:36:56 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 13:36:56 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:38:01 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:38:02 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-18 13:38:02 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771414682644@yahoo.com
+2026-02-18 13:38:02 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-18 13:38:02 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-18 13:38:02 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-18 13:38:03 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 13:38:03 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 13:38:03 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-18 13:38:03 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771414682644@yahoo.com)
+2026-02-18 13:38:03 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771414682644@yahoo.com'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:38:04 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 13:38:05 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:38:28 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:38:28 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:39:17 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:39:18 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:39:51 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:39:52 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-18 13:39:52 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771414792719@yahoo.com
+2026-02-18 13:39:52 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-18 13:39:52 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-18 13:39:52 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-18 13:39:52 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 13:39:52 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 13:39:53 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-18 13:39:53 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771414792719@yahoo.com)
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 13:39:53 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771414792719@yahoo.com'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:39:54 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 13:39:54 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 13:40:00 [main] INFO  utils.LogUtility - ***** Execution started: LogIn *****
+2026-02-18 13:40:02 [main] INFO  utils.LogUtility - Test flow: Login
+2026-02-18 13:40:02 [main] INFO  utils.LogUtility - Open login page
+2026-02-18 13:40:02 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-18 13:40:02 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-18 13:40:03 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:03 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:40:03 [main] INFO  utils.LogUtility - Login validated
+2026-02-18 13:40:04 [main] INFO  utils.LogUtility - ***** Execution finished: LogIn *****
+2026-02-18 13:40:09 [main] INFO  utils.LogUtility - ***** Execution started: SetUpTwoFactorAuthentication *****
+2026-02-18 13:40:11 [main] INFO  utils.LogUtility - Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)
+2026-02-18 13:40:11 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771414811292@yahoo.com
+2026-02-18 13:40:11 [main] INFO  utils.LogUtility - Open register form
+2026-02-18 13:40:11 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 13:40:11 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 13:40:11 [main] INFO  utils.LogUtility - Submit registration
+2026-02-18 13:40:11 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771414811292@yahoo.com)
+2026-02-18 13:40:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 13:40:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771414811292@yahoo.com'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:12 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 13:40:14 [main] INFO  utils.LogUtility - Login with newly created user
+2026-02-18 13:40:14 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=virlanalexandru261771414811292@yahoo.com)
+2026-02-18 13:40:14 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771414811292@yahoo.com'
+2026-02-18 13:40:14 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:14 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:40:15 [main] INFO  utils.LogUtility - Navigate to Profile
+2026-02-18 13:40:15 [main] INFO  pages.HeaderComponent - Header: click Profile
+2026-02-18 13:40:15 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: [data-test='nav-profile']
+2026-02-18 13:40:15 [main] INFO  utils.LogUtility - Read TOTP secret and validate format
+2026-02-18 13:40:15 [main] INFO  pages.ProfilePage - Profile: get TOTP secret
+2026-02-18 13:40:15 [main] INFO  utils.LogUtility - Generate TOTP code, submit and verify error message
+2026-02-18 13:40:15 [main] INFO  pages.ProfilePage - Profile: enter TOTP code
+2026-02-18 13:40:15 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='totp-code'] | value='LLXPRF4ER5752XKO'
+2026-02-18 13:40:15 [main] INFO  pages.ProfilePage - Profile: verify TOTP code
+2026-02-18 13:40:15 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='verify-totp']
+2026-02-18 13:40:16 [main] INFO  utils.LogUtility - Verify TOTP error message
+2026-02-18 13:40:16 [main] INFO  utils.LogUtility - ***** Execution finished: SetUpTwoFactorAuthentication *****
+2026-02-18 13:40:22 [main] INFO  utils.LogUtility - ***** Execution started: ChangePassword *****
+2026-02-18 13:40:24 [main] INFO  utils.LogUtility - Test flow: Change password
+2026-02-18 13:40:24 [main] INFO  utils.LogUtility - Open login page
+2026-02-18 13:40:24 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-18 13:40:24 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-18 13:40:24 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:24 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:40:25 [main] INFO  utils.LogUtility - Login validated
+2026-02-18 13:40:25 [main] INFO  utils.LogUtility - Navigate to Profile
+2026-02-18 13:40:25 [main] INFO  pages.HeaderComponent - Header: click Profile
+2026-02-18 13:40:25 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: [data-test='nav-profile']
+2026-02-18 13:40:25 [main] INFO  utils.LogUtility - Submit change password form
+2026-02-18 13:40:25 [main] INFO  pages.ProfilePage - Profile: change password
+2026-02-18 13:40:25 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='current-password'] | value='***'
+2026-02-18 13:40:25 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='new-password'] | value='***'
+2026-02-18 13:40:25 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input[data-test='new-password-confirm'] | value='***'
+2026-02-18 13:40:25 [main] DEBUG helpMethods.ElementsMethod - JS Click: By.cssSelector: button[data-test='change-password-submit']
+2026-02-18 13:40:25 [main] INFO  utils.LogUtility - ***** Execution finished: ChangePassword *****
+2026-02-18 13:40:31 [main] INFO  utils.LogUtility - ***** Execution started: BuyWithLogIn *****
+2026-02-18 13:40:32 [main] INFO  utils.LogUtility - Test flow: Buy with login (login -> product -> cart -> checkout -> payment)
+2026-02-18 13:40:32 [main] INFO  utils.LogUtility - Open login page
+2026-02-18 13:40:32 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-18 13:40:32 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-18 13:40:33 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:33 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:40:33 [main] INFO  utils.LogUtility - Login validated
+2026-02-18 13:40:33 [main] INFO  pages.HeaderComponent - Header: click Logo
+2026-02-18 13:40:33 [main] DEBUG helpMethods.ElementsMethod - JS Click: By.cssSelector: a.navbar-brand[title='Practice Software Testing - Toolshop'][href='/']
+2026-02-18 13:40:34 [main] INFO  utils.LogUtility - Navigate back to homepage
+2026-02-18 13:40:34 [main] INFO  pages.HomePage - Home: open product 'Combination Pliers'
+2026-02-18 13:40:34 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: img.card-img-top[alt='Combination Pliers']
+2026-02-18 13:40:34 [main] INFO  utils.LogUtility - Open product and add to cart
+2026-02-18 13:40:34 [main] INFO  pages.ProductDetailsPage - Product: add to cart
+2026-02-18 13:40:34 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='add-to-cart']
+2026-02-18 13:40:35 [main] INFO  pages.HeaderComponent - Header: open Cart
+2026-02-18 13:40:35 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: svg[data-icon='cart-shopping']:not(button[data-test='add-to-cart'] svg)
+2026-02-18 13:40:36 [main] INFO  utils.LogUtility - Checkout Step 1
+2026-02-18 13:40:36 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 1
+2026-02-18 13:40:36 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-1']
+2026-02-18 13:40:37 [main] INFO  utils.LogUtility - Checkout Step 2 (Address)
+2026-02-18 13:40:37 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 2 (Address)
+2026-02-18 13:40:37 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-2']
+2026-02-18 13:40:37 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-18 13:40:38 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-18 13:40:39 [main] INFO  pages.CheckoutPage - Checkout: ensure address fields are filled (postal_code/state)
+2026-02-18 13:40:39 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: postal_code | value='725200'
+2026-02-18 13:40:39 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: postal_code
+2026-02-18 13:40:39 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: postal_code | expected='725200'
+2026-02-18 13:40:39 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: state | value='Suceava'
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: state
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: state | expected='Suceava'
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-18 13:40:40 [main] INFO  utils.LogUtility - Checkout Step 3 (Payment)
+2026-02-18 13:40:40 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 3 (Payment)
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-3']
+2026-02-18 13:40:40 [main] INFO  pages.CheckoutPage - Checkout: select payment method = cash-on-delivery
+2026-02-18 13:40:40 [main] DEBUG helpMethods.ElementsMethod - Select by value on By.cssSelector: select[data-test='payment-method'] | value='cash-on-delivery'
+2026-02-18 13:40:41 [main] INFO  pages.CheckoutPage - Checkout: finish order
+2026-02-18 13:40:41 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='finish']
+2026-02-18 13:40:41 [main] INFO  utils.LogUtility - Verify success message is displayed
+2026-02-18 13:40:41 [main] INFO  utils.LogUtility - ***** Execution finished: BuyWithLogIn *****
+2026-02-18 13:40:47 [main] INFO  utils.LogUtility - ***** Execution started: BuyWithoutLogIn *****
+2026-02-18 13:40:48 [main] INFO  utils.LogUtility - Test flow: Buy without login (product -> cart -> login in checkout -> payment)
+2026-02-18 13:40:49 [main] INFO  utils.LogUtility - Open homepage
+2026-02-18 13:40:49 [main] INFO  pages.HomePage - Home: open product 'Combination Pliers'
+2026-02-18 13:40:49 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: img.card-img-top[alt='Combination Pliers']
+2026-02-18 13:40:49 [main] INFO  utils.LogUtility - Add product to cart
+2026-02-18 13:40:49 [main] INFO  pages.ProductDetailsPage - Product: add to cart
+2026-02-18 13:40:49 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='add-to-cart']
+2026-02-18 13:40:50 [main] INFO  pages.HeaderComponent - Header: open Cart
+2026-02-18 13:40:50 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: svg[data-icon='cart-shopping']:not(button[data-test='add-to-cart'] svg)
+2026-02-18 13:40:51 [main] INFO  utils.LogUtility - Proceed to checkout Step 1
+2026-02-18 13:40:51 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 1
+2026-02-18 13:40:51 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-1']
+2026-02-18 13:40:52 [main] INFO  utils.LogUtility - Login during checkout
+2026-02-18 13:40:52 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-18 13:40:52 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-18 13:40:52 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:40:52 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:40:52 [main] INFO  utils.LogUtility - Proceed to checkout Step 2 (Address)
+2026-02-18 13:40:52 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 2 (Address)
+2026-02-18 13:40:52 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-2']
+2026-02-18 13:40:52 [main] INFO  utils.LogUtility - Fill missing address fields if needed
+2026-02-18 13:40:53 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-18 13:40:53 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-18 13:40:54 [main] INFO  pages.CheckoutPage - Checkout: ensure address fields are filled (postal_code/state)
+2026-02-18 13:40:54 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: postal_code | value='725200'
+2026-02-18 13:40:54 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: postal_code
+2026-02-18 13:40:54 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: postal_code | expected='725200'
+2026-02-18 13:40:54 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: postal_code
+2026-02-18 13:40:55 [main] DEBUG helpMethods.ElementsMethod - Type into By.id: state | value='Suceava'
+2026-02-18 13:40:55 [main] DEBUG helpMethods.ElementsMethod - Press TAB on: By.id: state
+2026-02-18 13:40:55 [main] DEBUG helpMethods.ElementsMethod - Wait value equals on By.id: state | expected='Suceava'
+2026-02-18 13:40:55 [main] DEBUG helpMethods.ElementsMethod - Wait value stabilizes on: By.id: state
+2026-02-18 13:40:56 [main] INFO  utils.LogUtility - Proceed to checkout Step 3 (Payment)
+2026-02-18 13:40:56 [main] INFO  pages.CheckoutPage - Checkout: proceed to Step 3 (Payment)
+2026-02-18 13:40:56 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='proceed-3']
+2026-02-18 13:40:56 [main] INFO  pages.CheckoutPage - Checkout: select payment method = cash-on-delivery
+2026-02-18 13:40:56 [main] DEBUG helpMethods.ElementsMethod - Select by value on By.cssSelector: select[data-test='payment-method'] | value='cash-on-delivery'
+2026-02-18 13:40:56 [main] INFO  pages.CheckoutPage - Checkout: finish order
+2026-02-18 13:40:56 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button[data-test='finish']
+2026-02-18 13:40:57 [main] INFO  utils.LogUtility - Verify success message is displayed
+2026-02-18 13:40:57 [main] INFO  utils.LogUtility - ***** Execution finished: BuyWithoutLogIn *****
+2026-02-18 13:46:57 [main] INFO  utils.LogUtility - ***** Execution started: LogIn *****
+2026-02-18 13:46:59 [main] INFO  utils.LogUtility - Test flow: Login
+2026-02-18 13:46:59 [main] INFO  utils.LogUtility - Open login page
+2026-02-18 13:46:59 [main] INFO  pages.SignInPage - Login: fill credentials and submit (email=customer@practicesoftwaretesting.com)
+2026-02-18 13:47:00 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='customer@practicesoftwaretesting.com'
+2026-02-18 13:47:00 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:47:00 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: input.btnSubmit
+2026-02-18 13:47:00 [main] INFO  utils.LogUtility - Login validated
+2026-02-18 13:47:01 [main] INFO  utils.LogUtility - ***** Execution finished: LogIn *****
+2026-02-18 13:47:09 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 13:47:10 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-18 13:47:10 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771415230990@yahoo.com
+2026-02-18 13:47:11 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-18 13:47:11 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-18 13:47:11 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-18 13:47:11 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 13:47:11 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 13:47:11 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-18 13:47:11 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771415230990@yahoo.com)
+2026-02-18 13:47:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 13:47:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 13:47:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771415230990@yahoo.com'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 13:47:12 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****

@@ -1,10 +1,8 @@
 package modelObject;
 
 public class UserModel {
-
     private final String email;
     private final String password;
-
     private final String currentPassword;
     private final String newPassword;
 
@@ -30,15 +28,12 @@ public class UserModel {
     public String getEmail() {
         return email;
     }
-
     public String getPassword() {
         return password;
     }
-
     public String getCurrentPassword() {
         return currentPassword;
     }
-
     public String getNewPassword() {
         return newPassword;
     }

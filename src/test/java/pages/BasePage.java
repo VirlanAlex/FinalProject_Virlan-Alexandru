@@ -16,7 +16,4 @@ import org.openqa.selenium.support.PageFactory;
             this.alerts = new AlertMethods(driver);
             PageFactory.initElements(driver, this);
         }
-
-        public void assertLoginSucceeded(String accountUrlPart) {
-        }
     }

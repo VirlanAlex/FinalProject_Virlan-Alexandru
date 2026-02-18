@@ -1,7 +1,6 @@
 package modelObject;
 
 public class RegisterUserModel {
-
     private final String firstName;
     private final String lastName;
     private final String dateOfBirth;

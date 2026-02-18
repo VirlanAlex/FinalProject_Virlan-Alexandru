@@ -1,10 +1,13 @@
 package pages;
 
 import modelObject.UserModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class ProfilePage extends BasePage {
+    private static final Logger logger = LogManager.getLogger(ProfilePage.class);
 
     // -------- Change Password --------
     private final By currentPasswordInput = By.cssSelector("input[data-test='current-password']");
@@ -23,22 +26,25 @@ public class ProfilePage extends BasePage {
     }
 
     public void changePassword(UserModel user) {
+        logger.info("Profile: change password");
         elements.type(currentPasswordInput, user.getCurrentPassword());
         elements.type(newPasswordInput, user.getNewPassword());
         elements.type(confirmNewPasswordInput, user.getNewPassword());
-
         elements.jsClick(changePasswordButton);
     }
 
     public String getTotpSecret() {
+        logger.info("Profile: get TOTP secret");
         return elements.waitNonEmptyText(totpSecretLocator);
     }
 
     public void enterTotpCode(String code) {
+        logger.info("Profile: enter TOTP code");
         elements.type(totpInputLocator, code);
     }
 
     public void verifyTotpCode() {
+        logger.info("Profile: verify TOTP code");
         elements.click(verifyTotpButton);
     }
 

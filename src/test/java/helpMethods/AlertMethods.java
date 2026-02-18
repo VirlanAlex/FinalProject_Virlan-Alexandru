@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
     public class AlertMethods {
-
         private final WebDriver driver;
         private final WebDriverWait wait;
         private static final Duration ALERT_WAIT = Duration.ofSeconds(2);
@@ -43,7 +42,6 @@ import java.time.Duration;
             }
         }
 
-        // 1-liner pentru cazul tău: afișează alert, validează text, accept
         public void showAndValidateAndAccept(String message) {
             showAlertWithText(message);
             String actual = getAlertText();

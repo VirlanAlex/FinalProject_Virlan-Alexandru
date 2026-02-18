@@ -1,10 +1,13 @@
 package pages;
 
 import modelObject.RegisterUserModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
+    private static final Logger logger = LogManager.getLogger(RegisterPage.class);
 
     private final By registerLink     = By.cssSelector("a[data-test='register-link']");
     private final By firstNameInput   = By.cssSelector("input#first_name");
@@ -25,10 +28,12 @@ public class RegisterPage extends BasePage {
     }
 
     public void openRegisterForm() {
+        logger.info("Register: open register form");
         elements.click(registerLink);
     }
 
     public void register(RegisterUserModel user) {
+        logger.info("Register: fill form and submit (email={})", user.getEmail());
         elements.type(firstNameInput, user.getFirstName());
         elements.type(lastNameInput, user.getLastName());
         elements.type(dateOfBirthInput, user.getDateOfBirth());
