@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -20,8 +21,8 @@ jobs:
           java-version: '17'
           cache: maven
 
-      # BONUS: confirmă că testng.xml există și e cel corect în repo
-      - name: Debug: show testng.xml
+      - name: Debug - list test resources and show testng.xml
+        shell: bash
         run: |
           echo "=== Repo root ==="
           ls -la
