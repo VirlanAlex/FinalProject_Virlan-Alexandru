@@ -22,3 +22,14 @@ jobs:
 
       - name: Run tests (headless)
         run: mvn -B -e -Dheadless=true clean test
+
+      - name: Upload logs & reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-and-reports
+          path: |
+            logs/**
+            target/surefire-reports/**
+            target/test-output/**
+          if-no-files-found: ignore
