@@ -21,36 +21,6 @@ jobs:
           java-version: '17'
           cache: maven
 
-      # DEBUG 1: confirmă structura repo-ului
-      - name: Debug - repo listing
-        shell: bash
-        run: |
-          echo "PWD=$(pwd)"
-          echo "=== Repo root ==="
-          ls -la
-
-      # DEBUG 2: verifică testng.xml din ROOT (lângă pom.xml)
-      - name: Debug - verify root testng.xml exists and is readable
-        shell: bash
-        run: |
-          echo "=== root testng.xml details ==="
-          ls -la testng.xml || true
-          file testng.xml || true
-          echo "=== first 120 lines of root testng.xml ==="
-          sed -n '1,120p' testng.xml || true
-
-      # DEBUG 3: verifică și varianta din src/test/resources (dacă există)
-      - name: Debug - verify src/test/resources testng.xml exists and is readable
-        shell: bash
-        run: |
-          echo "=== src/test/resources ==="
-          ls -la src/test/resources || true
-          echo "=== src/test/resources/testng.xml details ==="
-          ls -la src/test/resources/testng.xml || true
-          file src/test/resources/testng.xml || true
-          echo "=== first 120 lines of src/test/resources/testng.xml ==="
-          sed -n '1,120p' src/test/resources/testng.xml || true
-
       - name: Run tests (headless)
         run: mvn -B -e -Dheadless=true clean test
 
