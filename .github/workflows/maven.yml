@@ -21,4 +21,4 @@ jobs:
           cache: maven
 
       - name: Run tests (headless)
-        run: mvn -B -Dheadless=true clean test
+        run: mvn -B -e -Dheadless=true clean test
