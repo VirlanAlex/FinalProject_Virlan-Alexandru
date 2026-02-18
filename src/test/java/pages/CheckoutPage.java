@@ -6,9 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class CheckoutPage extends BasePage {
-
     private static final Logger logger = LogManager.getLogger(CheckoutPage.class);
-
     private final By proceedStep1Button = By.cssSelector("button[data-test='proceed-1']");
     private final By proceedStep2Button = By.cssSelector("button[data-test='proceed-2']");
     private final By proceedStep3Button = By.cssSelector("button[data-test='proceed-3']");
@@ -39,19 +37,15 @@ public class CheckoutPage extends BasePage {
 
     
     public void fillMissingAddressFieldsIfNeeded(String postalCode, String state) {
-
         if (!elements.isPresent(postalCodeInput) || !elements.isPresent(stateInput)) {
             logger.info("Checkout: address inputs are not present - skip filling");
             return;
         }
-
         elements.visible(postalCodeInput);
         elements.visible(stateInput);
         elements.waitUntilValueStabilizes(postalCodeInput);
         elements.waitUntilValueStabilizes(stateInput);
-
         logger.info("Checkout: ensure address fields are filled (postal_code/state)");
-
         setIfBlankAndEnsure(postalCodeInput, postalCode);
         setIfBlankAndEnsure(stateInput, state);
     }
@@ -62,14 +56,12 @@ public class CheckoutPage extends BasePage {
             logger.info("Checkout: '{}' already filled - keep existing value", locator);
             return;
         }
-
         for (int i = 0; i < 2; i++) {
             if (i == 1) {
                 logger.warn("Checkout: field '{}' was overwritten after blur - retrying", locator);
             }
             elements.type(locator, value);
             elements.pressTab(locator);
-
             try {
                 elements.waitUntilValueEquals(locator, value);
                 elements.waitUntilValueStabilizes(locator);
@@ -77,7 +69,6 @@ public class CheckoutPage extends BasePage {
             } catch (RuntimeException ignored) {
             }
         }
-
         throw new AssertionError("Field value could not be stabilized for locator: " + locator);
     }
 

@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class ProfilePage extends BasePage {
-
     private static final Logger logger = LogManager.getLogger(ProfilePage.class);
 
     // -------- Change Password --------
@@ -31,7 +30,6 @@ public class ProfilePage extends BasePage {
         elements.type(currentPasswordInput, user.getCurrentPassword());
         elements.type(newPasswordInput, user.getNewPassword());
         elements.type(confirmNewPasswordInput, user.getNewPassword());
-
         elements.jsClick(changePasswordButton);
     }
 

@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
-
     private static final Logger logger = LogManager.getLogger(RegisterPage.class);
 
     private final By registerLink     = By.cssSelector("a[data-test='register-link']");

@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
     public class AlertMethods {
-
         private final WebDriver driver;
         private final WebDriverWait wait;
         private static final Duration ALERT_WAIT = Duration.ofSeconds(2);

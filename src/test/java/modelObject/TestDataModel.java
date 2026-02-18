@@ -1,35 +1,26 @@
 package modelObject;
 
 public class TestDataModel {
-
     private String baseUrl;
-
     private String validEmail;
     private String validPassword;
     private String newPassword;
-
     private String accountUrlPart;
     private String checkoutUrlPart;
     private String paymentSuccessMessage;
     private String totpErrorMessage;
-
     private RegisterData register;
-
     private Users users;
 
     public String getBaseUrl() { return baseUrl; }
-
     public String getValidEmail() { return validEmail; }
     public String getValidPassword() { return validPassword; }
     public String getNewPassword() { return newPassword; }
-
     public String getAccountUrlPart() { return accountUrlPart; }
     public String getCheckoutUrlPart() { return checkoutUrlPart; }
     public String getPaymentSuccessMessage() { return paymentSuccessMessage; }
     public String getTotpErrorMessage() { return totpErrorMessage; }
-
     public RegisterData getRegister() { return register; }
-
     public Users getUsers() { return users; }
 
     public static class RegisterData {
@@ -49,7 +40,6 @@ public class TestDataModel {
         public String getRegisterPassword() {
             return registerPassword;
         }
-
         public String getFirstName() { return firstName; }
         public String getLastName() { return lastName; }
         public String getDateOfBirth() { return dateOfBirth; }
@@ -74,7 +64,6 @@ public class TestDataModel {
     public static class LoginUser {
         private String email;
         private String password;
-
         public String getEmail() { return email; }
         public String getPassword() { return password; }
     }
@@ -83,7 +72,6 @@ public class TestDataModel {
         private String email;
         private String password;
         private String newPassword;
-
         public String getEmail() { return email; }
         public String getPassword() { return password; }
         public String getNewPassword() { return newPassword; }

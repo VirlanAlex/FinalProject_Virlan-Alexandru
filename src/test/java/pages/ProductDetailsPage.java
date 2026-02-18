@@ -11,6 +11,7 @@ public class ProductDetailsPage extends BasePage {
     public ProductDetailsPage(WebDriver driver) {
         super(driver);
     }
+
     public void addToCart() {
         logger.info("Product: add to cart");
         elements.click(addToCartButton);

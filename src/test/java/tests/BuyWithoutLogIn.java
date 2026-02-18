@@ -14,16 +14,14 @@ public class BuyWithoutLogIn extends SharedData {
     public void buyProducts() {
 
         LogUtility.infoLog("Test flow: Buy without login (product -> cart -> login in checkout -> payment)");
-
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
-
         HomePage homePage = new HomePage(driver);
         HeaderComponent header = new HeaderComponent(driver);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);
         SignInPage signInPage = new SignInPage(driver);
-
         driver.get(url("/"));
+
         LogUtility.infoLog("Open homepage");
         homePage.openCombinationPliers();
 
@@ -47,8 +45,8 @@ public class BuyWithoutLogIn extends SharedData {
         checkoutPage.proceedStep3();
         checkoutPage.selectCashOnDelivery();
         checkoutPage.finishOrder();
-
         String successText = checkoutPage.getSuccessMessage();
+
         LogUtility.infoLog("Verify success message is displayed");
         Assert.assertEquals(successText, getData().getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
 

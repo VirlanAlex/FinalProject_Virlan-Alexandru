@@ -11,6 +11,7 @@ public class HomePage extends BasePage {
     public HomePage(WebDriver driver) {
         super(driver);
     }
+
     public void openCombinationPliers() {
         logger.info("Home: open product 'Combination Pliers'");
         elements.click(combinationPliersProduct); // are wait inclus

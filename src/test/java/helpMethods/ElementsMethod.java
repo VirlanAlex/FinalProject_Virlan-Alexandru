@@ -10,18 +10,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ElementsMethod {
-
     private static final Logger logger = LogManager.getLogger(ElementsMethod.class);
-
     private final WebDriver driver;
     private final WebDriverWait wait;
-
     private static final Duration DEFAULT_WAIT = Duration.ofSeconds(10);
 
     public ElementsMethod(WebDriver driver) {
@@ -32,11 +28,9 @@ public class ElementsMethod {
     public WebElement presence(By locator) {
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
-
     public WebElement visible(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
-
     public WebElement clickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
@@ -95,6 +89,7 @@ public class ElementsMethod {
             return t.isEmpty() ? null : t;
         });
     }
+
     public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
         wait.until(condition);
     }
@@ -105,6 +100,7 @@ public class ElementsMethod {
     public String firstText(By locator) {
         return isPresent(locator) ? driver.findElements(locator).get(0).getText().trim() : "";
     }
+
     public String getValue(By locator) {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return element.getAttribute("value");
@@ -132,15 +128,12 @@ public class ElementsMethod {
     public void waitUntilValueStabilizes(By locator, Duration stableFor, Duration timeout) {
         WebDriverWait customWait = new WebDriverWait(driver, timeout);
         customWait.pollingEvery(Duration.ofMillis(100));
-
         AtomicReference<String> lastValue = new AtomicReference<>(null);
         AtomicLong lastChange = new AtomicLong(System.currentTimeMillis());
-
         customWait.until(d -> {
             WebElement el = d.findElement(locator);
             String current = el.getAttribute("value");
             String previous = lastValue.getAndSet(current);
-
             long now = System.currentTimeMillis();
             if (previous == null || !previous.equals(current)) {
                 lastChange.set(now);
@@ -152,12 +145,10 @@ public class ElementsMethod {
 
     private String safeValue(By locator, String value) {
         if (value == null) return "null";
-
         String loc = String.valueOf(locator).toLowerCase();
         if (loc.contains("password") || loc.contains("passwd") || loc.contains("secret") || loc.contains("token")) {
             return "***";
         }
-
         if (value.length() > 120) return value.substring(0, 120) + "...";
         return value;
     }
