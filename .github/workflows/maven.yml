@@ -2,9 +2,9 @@ name: Java CI (Maven + TestNG)
 
 on:
   push:
-    branches: [ "feature/first-branch" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "feature/first-branch" ]
+    branches: [ "main" ]
 
 jobs:
   test:
