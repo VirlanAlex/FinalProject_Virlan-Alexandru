@@ -20,6 +20,16 @@ jobs:
           java-version: '17'
           cache: maven
 
+      # BONUS: confirmă că testng.xml există și e cel corect în repo
+      - name: Debug: show testng.xml
+        run: |
+          echo "=== Repo root ==="
+          ls -la
+          echo "=== src/test/resources ==="
+          ls -la src/test/resources || true
+          echo "=== testng.xml content ==="
+          cat src/test/resources/testng.xml || true
+
       - name: Run tests (headless)
         run: mvn -B -e -Dheadless=true clean test
 
