@@ -2,7 +2,7 @@
 <suite name="UI Suite" verbose="1">
     <test name="All Tests">
         <packages>
-            <package name="tests"/>
+            <package name="test"/>
         </packages>
     </test>
 </suite>
