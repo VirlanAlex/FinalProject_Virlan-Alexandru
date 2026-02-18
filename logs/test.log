@@ -488,3 +488,29 @@
 2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
 2026-02-18 13:47:12 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
 2026-02-18 13:47:12 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
+2026-02-18 16:18:07 [main] INFO  org.testng.internal.Utils - [TestNG] Running:
+  C:\Users\Alex\AppData\Local\JetBrains\IdeaIC2025.2\temp-testng-customsuite.xml
+
+2026-02-18 16:18:07 [main] INFO  utils.LogUtility - ***** Execution started: CreateAccount *****
+2026-02-18 16:18:10 [main] INFO  utils.LogUtility - Test flow: Create account (register new user)
+2026-02-18 16:18:10 [main] INFO  utils.LogUtility - Generated unique email for registration: virlanalexandru261771424290162@yahoo.com
+2026-02-18 16:18:10 [main] INFO  utils.LogUtility - Navigate to Sign In -> Register form
+2026-02-18 16:18:10 [main] INFO  pages.HeaderComponent - Header: click Sign In
+2026-02-18 16:18:10 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='nav-sign-in']
+2026-02-18 16:18:10 [main] INFO  pages.RegisterPage - Register: open register form
+2026-02-18 16:18:10 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: a[data-test='register-link']
+2026-02-18 16:18:10 [main] INFO  utils.LogUtility - Submit registration form
+2026-02-18 16:18:10 [main] INFO  pages.RegisterPage - Register: fill form and submit (email=virlanalexandru261771424290162@yahoo.com)
+2026-02-18 16:18:10 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#first_name | value='Alex'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#last_name | value='Doe'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#dob | value='1987-08-20'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#street | value='On the highway'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#postal_code | value='725200'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#city | value='Falticeni'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#state | value='Suceava'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type (no clear) into By.cssSelector: select[data-test='country'] | value='Romania'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#phone | value='07452132132'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#email | value='virlanalexandru261771424290162@yahoo.com'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Type into By.cssSelector: input#password | value='***'
+2026-02-18 16:18:11 [main] DEBUG helpMethods.ElementsMethod - Click: By.cssSelector: button.btnSubmit
+2026-02-18 16:18:12 [main] INFO  utils.LogUtility - ***** Execution finished: CreateAccount *****
