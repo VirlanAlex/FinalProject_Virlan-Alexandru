@@ -1,13 +1,10 @@
 package pages;
 
 import modelObject.RegisterUserModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
-    private static final Logger logger = LogManager.getLogger(RegisterPage.class);
 
     private final By registerLink     = By.cssSelector("a[data-test='register-link']");
     private final By firstNameInput   = By.cssSelector("input#first_name");
@@ -28,12 +25,12 @@ public class RegisterPage extends BasePage {
     }
 
     public void openRegisterForm() {
-        logger.info("Register: open register form");
+        logStep("Open register form");
         elements.click(registerLink);
     }
 
     public void register(RegisterUserModel user) {
-        logger.info("Register: fill form and submit (email={})", user.getEmail());
+        logStep("Register new user (email=" + user.getEmail() + ")");
         elements.type(firstNameInput, user.getFirstName());
         elements.type(lastNameInput, user.getLastName());
         elements.type(dateOfBirthInput, user.getDateOfBirth());
@@ -41,7 +38,10 @@ public class RegisterPage extends BasePage {
         elements.type(postCodeInput, user.getPostCode());
         elements.type(cityInput, user.getCity());
         elements.type(stateInput, user.getState());
+
+        // sendKeys on <select> reliably selects option by visible text on most browsers
         elements.typeNoClear(countrySelect, user.getCountry());
+
         elements.type(phoneInput, user.getPhone());
         elements.type(emailInput, user.getEmail());
         elements.type(passwordInput, user.getPassword());

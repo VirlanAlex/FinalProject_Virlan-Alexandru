@@ -1,13 +1,10 @@
 package pages;
 
 import modelObject.UserModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class SignInPage extends BasePage {
-    private static final Logger logger = LogManager.getLogger(SignInPage.class);
 
     private final By emailInput = By.cssSelector("input#email");
     private final By passwordInput = By.cssSelector("input#password");
@@ -19,7 +16,7 @@ public class SignInPage extends BasePage {
     }
 
     public void login(UserModel user) {
-        logger.info("Login: fill credentials and submit (email={})", user.getEmail());
+        logStep("Login (email=" + user.getEmail() + ")");
         elements.visible(emailInput);
         elements.visible(passwordInput);
         elements.type(emailInput, user.getEmail());
@@ -30,10 +27,16 @@ public class SignInPage extends BasePage {
     public void loginAndAssert(UserModel user, String accountUrlPart) {
         String before = driver.getCurrentUrl();
         login(user);
+
         elements.waitUntil(d -> !d.getCurrentUrl().equals(before) || elements.isPresent(loginError));
-        if (driver.getCurrentUrl().contains(accountUrlPart)) return;
+
+        if (driver.getCurrentUrl().contains(accountUrlPart)) {
+            logStep("Login validated");
+            return;
+        }
+
         String err = elements.firstText(loginError);
-        logger.error("Login failed. Current url: {} | UI says: {}", driver.getCurrentUrl(), err);
+        logError("Login failed. Current url: " + driver.getCurrentUrl() + (err.isBlank() ? "" : " | UI says: " + err));
         throw new AssertionError("Login failed. Current url: " + driver.getCurrentUrl()
                 + (err.isBlank() ? "" : " | UI says: " + err));
     }
