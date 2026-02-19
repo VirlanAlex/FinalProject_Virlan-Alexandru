@@ -8,11 +8,9 @@ public class CheckoutPage extends BasePage {
     private final By proceedStep1Button = By.cssSelector("button[data-test='proceed-1']");
     private final By proceedStep2Button = By.cssSelector("button[data-test='proceed-2']");
     private final By proceedStep3Button = By.cssSelector("button[data-test='proceed-3']");
-
     private final By paymentMethodSelect = By.cssSelector("select[data-test='payment-method']");
     private final By finishButton = By.cssSelector("button[data-test='finish']");
     private final By successMessage = By.cssSelector("div[data-test='payment-success-message']");
-
     private final By postalCodeInput = By.id("postal_code");
     private final By stateInput = By.id("state");
 
@@ -44,7 +42,6 @@ public class CheckoutPage extends BasePage {
         elements.visible(postalCodeInput);
         elements.visible(stateInput);
 
-        // wait for async overwrite / prefill to settle
         elements.waitUntilValueStabilizes(postalCodeInput);
         elements.waitUntilValueStabilizes(stateInput);
 

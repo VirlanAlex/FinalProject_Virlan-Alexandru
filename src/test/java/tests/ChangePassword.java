@@ -19,12 +19,7 @@ public class ChangePassword extends SharedData {
         UserModel loginUser = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
 
-        UserModel cpUser = new UserModel(
-                getData().getValidEmail(),
-                getData().getValidPassword(),
-                getData().getValidPassword(),
-                getData().getNewPassword()
-        );
+        UserModel cpUser = new UserModel(getData().getValidEmail(), getData().getValidPassword(), getData().getValidPassword(), getData().getNewPassword());
 
         HeaderComponent header = new HeaderComponent(driver);
         ProfilePage profilePage = new ProfilePage(driver);

@@ -29,7 +29,6 @@ public class BuyWithoutLogIn extends SharedData {
         header.clickCart();
         checkoutPage.proceedStep1();
 
-        // login happens inside checkout flow
         signInPage.login(user);
 
         checkoutPage.proceedStep2();
@@ -39,8 +38,7 @@ public class BuyWithoutLogIn extends SharedData {
         checkoutPage.finishOrder();
 
         String successText = checkoutPage.getSuccessMessage();
-        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(),
-                "Payment success message is incorrect or missing");
+        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
 
         new AlertMethods(driver).showAndValidateAndAccept(successText);
     }

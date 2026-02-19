@@ -20,9 +20,7 @@ public class SetUpTwoFactorAuthentication extends SharedData {
     public void setUpAuthentication() {
         LogUtility.infoLog("Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)");
 
-        String uniqueEmail = getData().getRegister().getEmailPrefix()
-                + System.currentTimeMillis()
-                + getData().getRegister().getEmailDomain();
+        String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
 
         String regPass = getData().getRegister().getRegisterPassword();
 
@@ -30,19 +28,7 @@ public class SetUpTwoFactorAuthentication extends SharedData {
 
         driver.get(url("/auth/login"));
 
-        RegisterUserModel registerUser = new RegisterUserModel(
-                getData().getRegister().getFirstName(),
-                getData().getRegister().getLastName(),
-                getData().getRegister().getDateOfBirth(),
-                getData().getRegister().getStreet(),
-                getData().getRegister().getPostCode(),
-                getData().getRegister().getCity(),
-                getData().getRegister().getState(),
-                getData().getRegister().getCountry(),
-                getData().getRegister().getPhone(),
-                uniqueEmail,
-                regPass
-        );
+        RegisterUserModel registerUser = new RegisterUserModel(getData().getRegister().getFirstName(), getData().getRegister().getLastName(), getData().getRegister().getDateOfBirth(), getData().getRegister().getStreet(), getData().getRegister().getPostCode(), getData().getRegister().getCity(), getData().getRegister().getState(), getData().getRegister().getCountry(), getData().getRegister().getPhone(), uniqueEmail, regPass);
 
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.openRegisterForm();
@@ -64,12 +50,10 @@ public class SetUpTwoFactorAuthentication extends SharedData {
         String secret = profilePage.getTotpSecret();
         Assert.assertTrue(secret.matches("[A-Z0-9]{8,64}"), "TOTP secret invalid/empty: '" + secret + "'");
 
-        // intentionally submit an invalid code to validate server-side error handling
         profilePage.enterTotpCode(secret);
         profilePage.verifyTotpCode();
 
         String errorText = profilePage.getTotpErrorMessage();
-        Assert.assertEquals(errorText, getData().getTotpErrorMessage(),
-                "TOTP error message is missing or incorrect");
+        Assert.assertEquals(errorText, getData().getTotpErrorMessage(), "TOTP error message is missing or incorrect");
     }
 }

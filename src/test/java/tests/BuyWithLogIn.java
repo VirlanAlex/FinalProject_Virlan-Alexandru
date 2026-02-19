@@ -37,8 +37,7 @@ public class BuyWithLogIn extends SharedData {
         checkoutPage.finishOrder();
 
         String successText = checkoutPage.getSuccessMessage();
-        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(),
-                "Payment success message is incorrect or missing");
+        Assert.assertEquals(successText, getData().getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
 
         new AlertMethods(driver).showAndValidateAndAccept(successText);
     }
