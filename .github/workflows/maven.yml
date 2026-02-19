@@ -2,9 +2,9 @@ name: Java CI (Maven + TestNG)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test:
@@ -20,6 +20,12 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: maven
+
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable || true
+          google-chrome --version || true
 
       - name: Run TestNG suite
         run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng.xml

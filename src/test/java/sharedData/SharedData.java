@@ -26,20 +26,10 @@ public class SharedData {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
+        options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
-
-        boolean isCi = "true".equalsIgnoreCase(System.getenv("CI"))
-                || "true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS"));
-
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", String.valueOf(isCi)));
-
-        if (headless) {
-            options.addArguments("--headless=new");
-        } else {
-            options.addArguments("--start-maximized");
-        }
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
@@ -49,7 +39,9 @@ public class SharedData {
     @AfterMethod(alwaysRun = true)
     public void clearEnvironment() {
         try {
-            if (driver != null) driver.quit();
+            if (driver != null) {
+                driver.quit();
+            }
         } finally {
             LogUtility.finishTest(testName);
         }
@@ -57,14 +49,22 @@ public class SharedData {
 
     protected String url(String path) {
         String base = data.getBaseUrl();
+        if (base == null || base.trim().isEmpty()) {
+            throw new IllegalStateException("BaseUrl is missing from test data (testdata.json).");
+        }
+
+        base = base.trim();
         if (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+        if (path == null || path.isEmpty()) path = "/";
         if (!path.startsWith("/")) path = "/" + path;
+
         return base + path;
     }
 
     public WebDriver getDriver() {
         return driver;
     }
+
     public TestDataModel getData() {
         return data;
     }
