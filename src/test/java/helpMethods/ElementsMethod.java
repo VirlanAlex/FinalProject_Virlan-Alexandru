@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ElementsMethod {
 
     private static final Logger logger = LogManager.getLogger(ElementsMethod.class);
-    private static final Duration DEFAULT_WAIT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_WAIT   = Duration.ofSeconds(10);
     private static final Duration PAGE_READY_WAIT = Duration.ofSeconds(3);
 
     private final WebDriver driver;
@@ -22,8 +22,10 @@ public class ElementsMethod {
 
     public ElementsMethod(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, DEFAULT_WAIT);
+        this.wait   = new WebDriverWait(driver, DEFAULT_WAIT);
     }
+
+    // ── Wait conditions ───────────────────────────────────────────────────────
 
     public WebElement presence(By locator) {
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -37,9 +39,19 @@ public class ElementsMethod {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
+    /**
+     * Waits for the page document to reach readyState "complete".
+     * Replaces raw Thread.sleep() calls in page transitions.
+     */
     public void waitForPageReady() {
-        new WebDriverWait(driver, PAGE_READY_WAIT).until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
+        new WebDriverWait(driver, PAGE_READY_WAIT).until(d ->
+                ((JavascriptExecutor) d)
+                        .executeScript("return document.readyState")
+                        .equals("complete")
+        );
     }
+
+    // ── Actions ───────────────────────────────────────────────────────────────
 
     public void click(By locator) {
         logger.debug("Click: {}", locator);
@@ -74,6 +86,8 @@ public class ElementsMethod {
         visible(locator).sendKeys(Keys.TAB);
     }
 
+    // ── Select ────────────────────────────────────────────────────────────────
+
     public void selectByValue(By locator, String value) {
         logger.debug("Select by value on {} | value='{}'", locator, value);
         Select select = new Select(clickable(locator));
@@ -86,10 +100,14 @@ public class ElementsMethod {
         }
     }
 
+    // ── URL waits ─────────────────────────────────────────────────────────────
+
     public void waitUrlContains(String partial) {
         logger.debug("Wait URL contains: '{}'", partial);
         wait.until(ExpectedConditions.urlContains(partial));
     }
+
+    // ── Text / value helpers ─────────────────────────────────────────────────
 
     public String waitNonEmptyText(By locator) {
         return wait.until(d -> {
@@ -102,20 +120,29 @@ public class ElementsMethod {
     }
 
     public String getValue(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator))
+                   .getAttribute("value");
     }
 
     public String firstText(By locator) {
-        return isPresent(locator) ? driver.findElements(locator).get(0).getText().trim() : "";
+        return isPresent(locator)
+                ? driver.findElements(locator).get(0).getText().trim()
+                : "";
     }
+
+    // ── Presence check ────────────────────────────────────────────────────────
 
     public boolean isPresent(By locator) {
         return !driver.findElements(locator).isEmpty();
     }
 
+    // ── Generic condition wait ────────────────────────────────────────────────
+
     public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
         wait.until(condition);
     }
+
+    // ── Value stability waits ─────────────────────────────────────────────────
 
     public void waitUntilValueEquals(By locator, String expected) {
         logger.debug("Wait value equals on {} | expected='{}'", locator, expected);
@@ -130,13 +157,13 @@ public class ElementsMethod {
         WebDriverWait customWait = new WebDriverWait(driver, timeout);
         customWait.pollingEvery(Duration.ofMillis(100));
 
-        AtomicReference<String> lastValue = new AtomicReference<>(null);
-        AtomicLong lastChange = new AtomicLong(System.currentTimeMillis());
+        AtomicReference<String> lastValue  = new AtomicReference<>(null);
+        AtomicLong              lastChange = new AtomicLong(System.currentTimeMillis());
 
         customWait.until(d -> {
-            String current = d.findElement(locator).getAttribute("value");
+            String current  = d.findElement(locator).getAttribute("value");
             String previous = lastValue.getAndSet(current);
-            long now = System.currentTimeMillis();
+            long   now      = System.currentTimeMillis();
 
             if (previous == null || !previous.equals(current)) {
                 lastChange.set(now);
@@ -146,6 +173,11 @@ public class ElementsMethod {
         });
     }
 
+    // ── Private helpers ───────────────────────────────────────────────────────
+
+    /**
+     * Masks values for sensitive fields so they never appear in logs.
+     */
     private String safeValue(By locator, String value) {
         if (value == null) return "null";
         String loc = String.valueOf(locator).toLowerCase();

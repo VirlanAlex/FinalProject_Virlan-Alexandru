@@ -1,14 +1,12 @@
 {
   "baseUrl": "https://practicesoftwaretesting.com",
   "accountUrlPart": "/account",
-
   "users": {
     "login": {
       "email": "customer2@practicesoftwaretesting.com",
       "password": "welcome01"
     }
   },
-
   "register": {
     "firstName": "Alex",
     "lastName": "Doe",
@@ -23,7 +21,6 @@
     "emailDomain": "@yahoo.com",
     "registerPassword": "SuperSecure@12345"
   },
-
   "validEmail": "customer2@practicesoftwaretesting.com",
   "validPassword": "welcome01",
   "newPassword": "123sd21123@asdadd2Asds34",

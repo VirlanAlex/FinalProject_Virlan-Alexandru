@@ -11,13 +11,6 @@ import utils.TestDataLoader;
 
 import java.time.Duration;
 
-/**
- * Base class shared by all test classes.
- * Handles WebDriver lifecycle and provides access to test data.
- * <p>
- * Test data is loaded once (cached) via TestDataLoader.getTestData().
- * Headless mode can be activated via the system property: -Dheadless=true
- */
 public class SharedData {
 
     protected WebDriver driver;

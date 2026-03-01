@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
+
     private final By registerLink = By.cssSelector("a[data-test='register-link']");
     private final By firstNameInput = By.cssSelector("input#first_name");
     private final By lastNameInput = By.cssSelector("input#last_name");

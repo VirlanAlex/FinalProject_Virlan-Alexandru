@@ -1,6 +1,7 @@
 package modelObject;
 
 public class RegisterUserModel {
+
     private final String firstName;
     private final String lastName;
     private final String dateOfBirth;
@@ -26,7 +27,6 @@ public class RegisterUserModel {
         this.email = builder.email;
         this.password = builder.password;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -149,18 +149,16 @@ public class RegisterUserModel {
             modelObject.TestDataModel.RegisterData data,
             String uniqueEmail) {
 
-        return new Builder()
-                .firstName(data.getFirstName())
-                .lastName(data.getLastName())
-                .dateOfBirth(data.getDateOfBirth())
-                .street(data.getStreet())
-                .postCode(data.getPostCode())
-                .city(data.getCity())
-                .state(data.getState())
-                .country(data.getCountry())
-                .phone(data.getPhone())
-                .email(uniqueEmail)
-                .password(data.getRegisterPassword())
-                .build();
+        return new Builder().
+                firstName(data.getFirstName()).
+                lastName(data.getLastName()).
+                dateOfBirth(data.getDateOfBirth()).
+                street(data.getStreet()).postCode(data.getPostCode()).
+                city(data.getCity()).
+                state(data.getState()).
+                country(data.getCountry()).
+                phone(data.getPhone()).
+                email(uniqueEmail).
+                password(data.getRegisterPassword()).build();
     }
 }

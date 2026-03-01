@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import utils.LogUtility;
 
 public class BasePage {
+
     protected WebDriver driver;
     protected ElementsMethod elements;
     protected AlertMethods alerts;

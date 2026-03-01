@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class CheckoutPage extends BasePage {
+
     private final By proceedStep1Button = By.cssSelector("button[data-test='proceed-1']");
     private final By proceedStep2Button = By.cssSelector("button[data-test='proceed-2']");
     private final By proceedStep3Button = By.cssSelector("button[data-test='proceed-3']");
