@@ -18,13 +18,10 @@ public class SetUpTwoFactorAuthentication extends SharedData {
 
     @Test
     public void setUpAuthentication() {
-        LogUtility.infoLog("Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)");
-
         String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
-
         String regPass = getData().getRegister().getRegisterPassword();
 
-        LogUtility.infoLog("Generated unique email for registration: " + uniqueEmail);
+        LogUtility.infoLog("Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)");
 
         driver.get(url("/auth/login"));
 
@@ -55,5 +52,6 @@ public class SetUpTwoFactorAuthentication extends SharedData {
 
         String errorText = profilePage.getTotpErrorMessage();
         Assert.assertEquals(errorText, getData().getTotpErrorMessage(), "TOTP error message is missing or incorrect");
+        LogUtility.infoLog("Generated unique email for registration: " + uniqueEmail);
     }
 }

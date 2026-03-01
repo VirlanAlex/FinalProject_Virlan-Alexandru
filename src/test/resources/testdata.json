@@ -4,7 +4,7 @@
 
   "users": {
     "login": {
-      "email": "customer@practicesoftwaretesting.com",
+      "email": "customer2@practicesoftwaretesting.com",
       "password": "welcome01"
     }
   },
@@ -24,7 +24,7 @@
     "registerPassword": "SuperSecure@12345"
   },
 
-  "validEmail": "customer@practicesoftwaretesting.com",
+  "validEmail": "customer2@practicesoftwaretesting.com",
   "validPassword": "welcome01",
   "newPassword": "123sd21123@asdadd2Asds34",
   "checkoutUrlPart": "/checkout",

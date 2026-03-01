@@ -19,18 +19,24 @@ public class CheckoutPage extends BasePage {
     }
 
     public void proceedStep1() {
-        logStep("Proceed to checkout step 1");
         elements.click(proceedStep1Button);
+        logStep("Proceed to checkout step 1");
     }
 
     public void proceedStep2() {
-        logStep("Proceed to checkout step 2 (Address)");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+        }
         elements.click(proceedStep2Button);
+        logStep("Proceed to checkout step 2 (Address)");
+
     }
 
     public void proceedStep3() {
-        logStep("Proceed to checkout step 3 (Payment)");
+
         elements.click(proceedStep3Button);
+        logStep("Proceed to checkout step 3 (Payment)");
     }
 
     public void fillMissingAddressFieldsIfNeeded(String postalCode, String state) {

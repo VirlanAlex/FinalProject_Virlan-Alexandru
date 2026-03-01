@@ -12,8 +12,6 @@ public class BuyWithLogIn extends SharedData {
 
     @Test
     public void buyWithLogin() {
-        LogUtility.infoLog("Test flow: Buy with login (login -> product -> cart -> checkout -> payment)");
-
         driver.get(url("/auth/login"));
 
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
@@ -40,5 +38,7 @@ public class BuyWithLogIn extends SharedData {
         Assert.assertEquals(successText, getData().getPaymentSuccessMessage(), "Payment success message is incorrect or missing");
 
         new AlertMethods(driver).showAndValidateAndAccept(successText);
+
+        LogUtility.infoLog("Test flow: Buy with login (login -> product -> cart -> checkout -> payment)");
     }
 }

@@ -11,11 +11,8 @@ public class CreateAccount extends SharedData {
 
     @Test
     public void startAccount() {
-        LogUtility.infoLog("Test flow: Create account (register new user)");
-
         String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
-
-        LogUtility.infoLog("Generated unique email for registration: " + uniqueEmail);
+        LogUtility.infoLog("Test flow: Create account (register new user)");
 
         RegisterUserModel user = new RegisterUserModel(getData().getRegister().getFirstName(), getData().getRegister().getLastName(), getData().getRegister().getDateOfBirth(), getData().getRegister().getStreet(), getData().getRegister().getPostCode(), getData().getRegister().getCity(), getData().getRegister().getState(), getData().getRegister().getCountry(), getData().getRegister().getPhone(), uniqueEmail, getData().getValidPassword());
 
@@ -25,5 +22,6 @@ public class CreateAccount extends SharedData {
         header.clickSignIn();
         registerPage.openRegisterForm();
         registerPage.register(user);
+        LogUtility.infoLog("Generated unique email for registration: " + uniqueEmail);
     }
 }
