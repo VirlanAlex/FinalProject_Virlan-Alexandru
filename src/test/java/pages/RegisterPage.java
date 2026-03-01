@@ -5,20 +5,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
-
-    private final By registerLink     = By.cssSelector("a[data-test='register-link']");
-    private final By firstNameInput   = By.cssSelector("input#first_name");
-    private final By lastNameInput    = By.cssSelector("input#last_name");
+    private final By registerLink = By.cssSelector("a[data-test='register-link']");
+    private final By firstNameInput = By.cssSelector("input#first_name");
+    private final By lastNameInput = By.cssSelector("input#last_name");
     private final By dateOfBirthInput = By.cssSelector("input#dob");
-    private final By streetInput      = By.cssSelector("input#street");
-    private final By postCodeInput    = By.cssSelector("input#postal_code");
-    private final By cityInput        = By.cssSelector("input#city");
-    private final By stateInput       = By.cssSelector("input#state");
-    private final By countrySelect    = By.cssSelector("select[data-test='country']");
-    private final By phoneInput       = By.cssSelector("input#phone");
-    private final By emailInput       = By.cssSelector("input#email");
-    private final By passwordInput    = By.cssSelector("input#password");
-    private final By registerButton   = By.cssSelector("button.btnSubmit");
+    private final By streetInput = By.cssSelector("input#street");
+    private final By postCodeInput = By.cssSelector("input#postal_code");
+    private final By cityInput = By.cssSelector("input#city");
+    private final By stateInput = By.cssSelector("input#state");
+    private final By countrySelect = By.cssSelector("select[data-test='country']");
+    private final By phoneInput = By.cssSelector("input#phone");
+    private final By emailInput = By.cssSelector("input#email");
+    private final By passwordInput = By.cssSelector("input#password");
+    private final By registerButton = By.cssSelector("button.btnSubmit");
 
     public RegisterPage(WebDriver driver) {
         super(driver);

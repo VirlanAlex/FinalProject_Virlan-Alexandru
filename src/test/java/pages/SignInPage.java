@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class SignInPage extends BasePage {
-
     private final By emailInput = By.cssSelector("input#email");
     private final By passwordInput = By.cssSelector("input#password");
     private final By loginButton = By.cssSelector("input.btnSubmit");

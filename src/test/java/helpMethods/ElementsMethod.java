@@ -2,23 +2,23 @@ package helpMethods;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ElementsMethod {
+
     private static final Logger logger = LogManager.getLogger(ElementsMethod.class);
+    private static final Duration DEFAULT_WAIT = Duration.ofSeconds(10);
+    private static final Duration PAGE_READY_WAIT = Duration.ofSeconds(3);
+
     private final WebDriver driver;
     private final WebDriverWait wait;
-    private static final Duration DEFAULT_WAIT = Duration.ofSeconds(10);
 
     public ElementsMethod(WebDriver driver) {
         this.driver = driver;
@@ -28,11 +28,17 @@ public class ElementsMethod {
     public WebElement presence(By locator) {
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
+
     public WebElement visible(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+
     public WebElement clickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public void waitForPageReady() {
+        new WebDriverWait(driver, PAGE_READY_WAIT).until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
     }
 
     public void click(By locator) {
@@ -63,21 +69,26 @@ public class ElementsMethod {
         visible(locator).clear();
     }
 
-    public void waitUrlContains(String partial) {
-        logger.debug("Wait URL contains: '{}'", partial);
-        wait.until(ExpectedConditions.urlContains(partial));
+    public void pressTab(By locator) {
+        logger.debug("Press TAB on: {}", locator);
+        visible(locator).sendKeys(Keys.TAB);
     }
 
     public void selectByValue(By locator, String value) {
         logger.debug("Select by value on {} | value='{}'", locator, value);
-        WebElement dropdown = clickable(locator);
-        Select select = new Select(dropdown);
+        Select select = new Select(clickable(locator));
         select.selectByValue(value);
 
         String actual = select.getFirstSelectedOption().getAttribute("value");
         if (!value.equals(actual)) {
-            throw new AssertionError("Dropdown selection failed. Expected: " + value + " but was: " + actual);
+            throw new AssertionError(
+                    "Dropdown selection failed. Expected: " + value + " but was: " + actual);
         }
+    }
+
+    public void waitUrlContains(String partial) {
+        logger.debug("Wait URL contains: '{}'", partial);
+        wait.until(ExpectedConditions.urlContains(partial));
     }
 
     public String waitNonEmptyText(By locator) {
@@ -90,51 +101,43 @@ public class ElementsMethod {
         });
     }
 
-    public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
-        wait.until(condition);
-    }
-    public boolean isPresent(By locator) {
-        return !driver.findElements(locator).isEmpty();
+    public String getValue(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
     }
 
     public String firstText(By locator) {
         return isPresent(locator) ? driver.findElements(locator).get(0).getText().trim() : "";
     }
 
-    public String getValue(By locator) {
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return element.getAttribute("value");
+    public boolean isPresent(By locator) {
+        return !driver.findElements(locator).isEmpty();
     }
 
-    public void pressTab(By locator) {
-        logger.debug("Press TAB on: {}", locator);
-        visible(locator).sendKeys(Keys.TAB);
+    public void waitUntil(java.util.function.Function<WebDriver, Boolean> condition) {
+        wait.until(condition);
     }
 
     public void waitUntilValueEquals(By locator, String expected) {
         logger.debug("Wait value equals on {} | expected='{}'", locator, expected);
-        wait.until(d -> {
-            WebElement el = d.findElement(locator);
-            String v = el.getAttribute("value");
-            return expected.equals(v);
-        });
+        wait.until(d -> expected.equals(d.findElement(locator).getAttribute("value")));
     }
 
     public void waitUntilValueStabilizes(By locator) {
-        logger.debug("Wait value stabilizes on: {}", locator);
         waitUntilValueStabilizes(locator, Duration.ofMillis(700), DEFAULT_WAIT);
     }
 
     public void waitUntilValueStabilizes(By locator, Duration stableFor, Duration timeout) {
         WebDriverWait customWait = new WebDriverWait(driver, timeout);
         customWait.pollingEvery(Duration.ofMillis(100));
+
         AtomicReference<String> lastValue = new AtomicReference<>(null);
         AtomicLong lastChange = new AtomicLong(System.currentTimeMillis());
+
         customWait.until(d -> {
-            WebElement el = d.findElement(locator);
-            String current = el.getAttribute("value");
+            String current = d.findElement(locator).getAttribute("value");
             String previous = lastValue.getAndSet(current);
             long now = System.currentTimeMillis();
+
             if (previous == null || !previous.equals(current)) {
                 lastChange.set(now);
                 return false;
@@ -146,11 +149,10 @@ public class ElementsMethod {
     private String safeValue(By locator, String value) {
         if (value == null) return "null";
         String loc = String.valueOf(locator).toLowerCase();
-        if (loc.contains("password") || loc.contains("passwd") || loc.contains("secret") || loc.contains("token")) {
+        if (loc.contains("password") || loc.contains("passwd")
+                || loc.contains("secret") || loc.contains("token")) {
             return "***";
         }
-        if (value.length() > 120) return value.substring(0, 120) + "...";
-        return value;
+        return value.length() > 120 ? value.substring(0, 120) + "..." : value;
     }
-
 }

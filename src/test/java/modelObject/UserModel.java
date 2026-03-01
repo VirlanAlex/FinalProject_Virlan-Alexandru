@@ -15,10 +15,7 @@ public class UserModel {
     }
 
     // CHANGE PASSWORD
-    public UserModel(String email,
-                     String password,
-                     String currentPassword,
-                     String newPassword) {
+    public UserModel(String email, String password, String currentPassword, String newPassword) {
         this.email = email;
         this.password = password;
         this.currentPassword = currentPassword;
@@ -28,12 +25,15 @@ public class UserModel {
     public String getEmail() {
         return email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public String getCurrentPassword() {
         return currentPassword;
     }
+
     public String getNewPassword() {
         return newPassword;
     }

@@ -11,10 +11,16 @@ import utils.TestDataLoader;
 
 import java.time.Duration;
 
+/**
+ * Base class shared by all test classes.
+ * Handles WebDriver lifecycle and provides access to test data.
+ * <p>
+ * Test data is loaded once (cached) via TestDataLoader.getTestData().
+ * Headless mode can be activated via the system property: -Dheadless=true
+ */
 public class SharedData {
 
     protected WebDriver driver;
-    private TestDataModel data;
     private String testName;
 
     @BeforeMethod(alwaysRun = true)
@@ -22,14 +28,15 @@ public class SharedData {
         testName = this.getClass().getSimpleName();
         LogUtility.startTest(testName);
 
-        data = TestDataLoader.load("testdata.json", TestDataModel.class);
-
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
-//        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
+
+        if (Boolean.parseBoolean(System.getProperty("headless", "false"))) {
+            options.addArguments("--headless");
+        }
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
@@ -48,16 +55,14 @@ public class SharedData {
     }
 
     protected String url(String path) {
-        String base = data.getBaseUrl();
+        String base = getData().getBaseUrl();
         if (base == null || base.trim().isEmpty()) {
             throw new IllegalStateException("BaseUrl is missing from test data (testdata.json).");
         }
-
         base = base.trim();
         if (base.endsWith("/")) base = base.substring(0, base.length() - 1);
         if (path == null || path.isEmpty()) path = "/";
         if (!path.startsWith("/")) path = "/" + path;
-
         return base + path;
     }
 
@@ -66,6 +71,6 @@ public class SharedData {
     }
 
     public TestDataModel getData() {
-        return data;
+        return TestDataLoader.getTestData();
     }
 }

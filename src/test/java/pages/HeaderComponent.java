@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class HeaderComponent extends BasePage {
-
     private final By signInLink = By.cssSelector("a[data-test='nav-sign-in']");
     private final By logoLink = By.cssSelector("a.navbar-brand[title='Practice Software Testing - Toolshop'][href='/']");
     private final By profileLink = By.cssSelector("[data-test='nav-profile']");

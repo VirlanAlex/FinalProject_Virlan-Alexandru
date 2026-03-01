@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class CheckoutPage extends BasePage {
-
     private final By proceedStep1Button = By.cssSelector("button[data-test='proceed-1']");
     private final By proceedStep2Button = By.cssSelector("button[data-test='proceed-2']");
     private final By proceedStep3Button = By.cssSelector("button[data-test='proceed-3']");
@@ -19,24 +18,19 @@ public class CheckoutPage extends BasePage {
     }
 
     public void proceedStep1() {
-        elements.click(proceedStep1Button);
         logStep("Proceed to checkout step 1");
+        elements.click(proceedStep1Button);
     }
 
     public void proceedStep2() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-        }
-        elements.click(proceedStep2Button);
         logStep("Proceed to checkout step 2 (Address)");
-
+        elements.waitForPageReady();
+        elements.click(proceedStep2Button);
     }
 
     public void proceedStep3() {
-
-        elements.click(proceedStep3Button);
         logStep("Proceed to checkout step 3 (Payment)");
+        elements.click(proceedStep3Button);
     }
 
     public void fillMissingAddressFieldsIfNeeded(String postalCode, String state) {
@@ -65,8 +59,8 @@ public class CheckoutPage extends BasePage {
             return false;
         }
 
-        for (int i = 0; i < 2; i++) {
-            if (i == 1) {
+        for (int attempt = 0; attempt < 2; attempt++) {
+            if (attempt == 1) {
                 logWarn("Field '" + fieldName + "' was overwritten after blur -> retry once");
             }
             elements.type(locator, value);
