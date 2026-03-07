@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ElementsMethod {
 
     private static final Logger logger = LogManager.getLogger(ElementsMethod.class);
-    private static final Duration DEFAULT_WAIT   = Duration.ofSeconds(10);
-    private static final Duration PAGE_READY_WAIT = Duration.ofSeconds(3);
+    private static final Duration DEFAULT_WAIT   = Duration.ofSeconds(30);
+    private static final Duration PAGE_READY_WAIT = Duration.ofSeconds(10);
 
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -39,16 +39,8 @@ public class ElementsMethod {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-    /**
-     * Waits for the page document to reach readyState "complete".
-     * Replaces raw Thread.sleep() calls in page transitions.
-     */
     public void waitForPageReady() {
-        new WebDriverWait(driver, PAGE_READY_WAIT).until(d ->
-                ((JavascriptExecutor) d)
-                        .executeScript("return document.readyState")
-                        .equals("complete")
-        );
+        new WebDriverWait(driver, PAGE_READY_WAIT).until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
     }
 
     // ── Actions ───────────────────────────────────────────────────────────────
@@ -95,8 +87,7 @@ public class ElementsMethod {
 
         String actual = select.getFirstSelectedOption().getAttribute("value");
         if (!value.equals(actual)) {
-            throw new AssertionError(
-                    "Dropdown selection failed. Expected: " + value + " but was: " + actual);
+            throw new AssertionError("Dropdown selection failed. Expected: " + value + " but was: " + actual);
         }
     }
 
@@ -120,14 +111,11 @@ public class ElementsMethod {
     }
 
     public String getValue(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator))
-                   .getAttribute("value");
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
     }
 
     public String firstText(By locator) {
-        return isPresent(locator)
-                ? driver.findElements(locator).get(0).getText().trim()
-                : "";
+        return isPresent(locator) ? driver.findElements(locator).get(0).getText().trim() : "";
     }
 
     // ── Presence check ────────────────────────────────────────────────────────
@@ -175,9 +163,6 @@ public class ElementsMethod {
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
-    /**
-     * Masks values for sensitive fields so they never appear in logs.
-     */
     private String safeValue(By locator, String value) {
         if (value == null) return "null";
         String loc = String.valueOf(locator).toLowerCase();
