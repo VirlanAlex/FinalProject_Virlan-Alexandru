@@ -30,11 +30,15 @@ jobs:
           java-version: "17"
           cache: maven
 
-      - name: Install Google Chrome
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Verify Chrome installation
         run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable || true
-          google-chrome --version || true
+          google-chrome --version
+          which google-chrome
 
       - name: Generate testng-shard.xml for this machine
         run: |
@@ -68,10 +72,11 @@ jobs:
             echo "</suite>"
           } > testng-shard.xml
 
+          echo "--- testng-shard.xml generat ---"
           cat testng-shard.xml
 
       - name: Run TestNG Shard ${{ matrix.shard-index }}
-        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml -Dheadless=true
+        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml
 
       - name: Upload Surefire reports (Shard ${{ matrix.shard-index }})
         if: always()
@@ -131,7 +136,6 @@ jobs:
           echo ""
           echo "========== SUMAR TOTAL =========="
 
-          # Totalul real: numarul de metode @Test din codul sursa
           TOTAL_TESTS=$(grep -r '@Test' src/test/java/tests/ | grep -v '//' | wc -l)
 
           PASSED=0
@@ -141,16 +145,9 @@ jobs:
           for f in merged-reports/all-xml/TEST-tests.*.xml; do
             CLASS=$(basename "$f" .xml | sed 's/TEST-tests\.//')
 
-            # Cauta elementul <testcase> care corespunde metodei @Test reale
-            # (nu @BeforeMethod / @AfterMethod care nu au <failure>/<error> legate de test)
-            # Logica: daca fisierul contine <error in afara contextului de configuratie → FAILED
-            # Daca testcase-ul principal are <skipped/> → SKIPPED, altfel → PASSED
-
             HAS_FAILURE=$(grep -c '<failure\|<error' "$f" 2>/dev/null || echo 0)
             HAS_SKIPPED=$(grep -c '<skipped' "$f" 2>/dev/null || echo 0)
 
-            # @BeforeMethod esuat → apare error + skipped (testul in sine e skipped)
-            # @Test esuat direct → apare doar failure, fara skipped
             if [ "$HAS_SKIPPED" -gt 0 ]; then
               STATUS="SKIPPED ⚠️"
               SKIPPED=$((SKIPPED + 1))

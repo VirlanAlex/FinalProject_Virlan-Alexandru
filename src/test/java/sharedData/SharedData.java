@@ -25,13 +25,15 @@ public class SharedData {
         options.addArguments("--incognito");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--window-size=1920,1080");
 
         boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
         boolean isHeadlessProp = Boolean.parseBoolean(System.getProperty("headless", "false"));
         if (isCI || isHeadlessProp) {
             options.addArguments("--headless=new");
-            options.addArguments("--remote-debugging-port=9222");
         }
 
         driver = new ChromeDriver(options);
