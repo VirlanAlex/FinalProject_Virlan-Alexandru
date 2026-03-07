@@ -11,7 +11,7 @@ jobs:
   # JOB 1: Ruleaza testele pe 3 masini virtuale
   # ─────────────────────────────────────────────
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       fail-fast: false
