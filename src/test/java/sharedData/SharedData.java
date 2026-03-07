@@ -26,6 +26,9 @@ public class SharedData {
     protected WebDriver driver;
     private String testName;
 
+    // Selector care confirma ca pagina s-a incarcat (prezent pe TOATE paginile site-ului)
+    private static final By NAVBAR = By.cssSelector("nav, app-header, .navbar");
+
     @BeforeMethod(alwaysRun = true)
     public void prepareEnvironment() {
         testName = this.getClass().getSimpleName();
@@ -37,25 +40,42 @@ public class SharedData {
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-allow-origins=*");
-        // NU mai folosim --headless deloc - Xvfb din workflow ofera display virtual
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-        driver.get(url("/"));
 
-        LogUtility.infoLog("URL: " + driver.getCurrentUrl() + " | Title: " + driver.getTitle());
+        navigateTo("/");
+    }
 
+    /**
+     * Navigheaza la o pagina si asteapta sa treaca Cloudflare + Angular sa se incarce.
+     * Foloseste aceasta metoda in TOATE testele in loc de driver.get().
+     */
+    protected void navigateTo(String path) {
+        String fullUrl = url(path);
+        LogUtility.infoLog("Navigating to: " + fullUrl);
+        driver.get(fullUrl);
+
+        // Asteapta ca titlul sa nu mai fie "Just a moment..." (Cloudflare challenge)
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(60))
-                    .until(ExpectedConditions.elementToBeClickable(
-                            By.cssSelector("a[data-test='nav-sign-in']")
-                    ));
-            LogUtility.infoLog("Page loaded OK.");
+            new WebDriverWait(driver, Duration.ofSeconds(30))
+                    .until(d -> !d.getTitle().toLowerCase().contains("just a moment"));
+            LogUtility.infoLog("Cloudflare passed. Title: " + driver.getTitle());
         } catch (Exception e) {
-            takeDebugSnapshot("SETUP_FAILED_" + testName);
+            LogUtility.infoLog("WARNING: Possible Cloudflare block. Title: " + driver.getTitle());
+        }
+
+        // Asteapta navbar-ul sa fie vizibil (Angular a randat pagina)
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(30))
+                    .until(ExpectedConditions.visibilityOfElementLocated(NAVBAR));
+            LogUtility.infoLog("Page ready: " + driver.getCurrentUrl());
+        } catch (Exception e) {
+            takeDebugSnapshot("NAV_FAILED_" + path.replace("/", "_"));
             throw new RuntimeException(
-                    "Page not loaded. URL=" + driver.getCurrentUrl() +
-                            " Title=" + driver.getTitle(), e);
+                    "Page not ready after navigation to " + fullUrl +
+                            " | URL=" + driver.getCurrentUrl() +
+                            " | Title=" + driver.getTitle(), e);
         }
     }
 
@@ -80,7 +100,6 @@ public class SharedData {
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             Files.copy(screenshot.toPath(), Paths.get("target/screenshots/" + label + ".png"));
             Files.writeString(Paths.get("target/screenshots/" + label + ".html"), driver.getPageSource());
-            LogUtility.infoLog("Snapshot saved: target/screenshots/" + label);
         } catch (IOException ex) {
             LogUtility.infoLog("Could not save snapshot: " + ex.getMessage());
         }

@@ -25,7 +25,7 @@ public class SetUpTwoFactorAuthentication extends SharedData {
         RegisterUserModel registerUser = RegisterUserModel.fromRegisterData(getData().getRegister(), uniqueEmail);
         String regPass = getData().getRegister().getRegisterPassword();
 
-        driver.get(url("/auth/login"));
+        navigateTo("/auth/login");
 
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.openRegisterForm();
@@ -33,7 +33,7 @@ public class SetUpTwoFactorAuthentication extends SharedData {
 
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(d -> d.getCurrentUrl().contains("/auth/login") || d.getCurrentUrl().contains("/account"));
 
-        driver.get(url("/auth/login"));
+        navigateTo("/auth/login");
 
         UserModel loginUser = new UserModel(uniqueEmail, regPass);
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());

@@ -14,7 +14,7 @@ public class BuyWithLogIn extends SharedData {
     public void buyWithLogin() {
         LogUtility.infoLog("Test flow: Buy with login (login -> product -> cart -> checkout -> payment)");
 
-        driver.get(url("/auth/login"));
+        navigateTo("/auth/login");
 
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(user, getData().getAccountUrlPart());

@@ -12,7 +12,7 @@ public class LogIn extends SharedData {
     public void signInAccount() {
         LogUtility.infoLog("Test flow: Login");
 
-        driver.get(url("/auth/login"));
+        navigateTo("/auth/login");
 
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(user, getData().getAccountUrlPart());

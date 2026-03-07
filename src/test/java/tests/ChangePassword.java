@@ -14,7 +14,7 @@ public class ChangePassword extends SharedData {
     public void changePassword() {
         LogUtility.infoLog("Test flow: Change password");
 
-        driver.get(url("/auth/login"));
+        navigateTo("/auth/login");
 
         UserModel loginUser = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
