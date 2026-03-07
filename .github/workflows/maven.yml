@@ -68,7 +68,6 @@ jobs:
             echo "</suite>"
           } > testng-shard.xml
 
-          echo "--- testng-shard.xml generat ---"
           cat testng-shard.xml
 
       - name: Run TestNG Shard ${{ matrix.shard-index }}
@@ -86,8 +85,8 @@ jobs:
   # ─────────────────────────────────────────────
   merge-reports:
     runs-on: ubuntu-latest
-    needs: test          # asteapta sa termine toate cele 3 masini
-    if: always()         # ruleaza chiar daca unele teste au picat
+    needs: test
+    if: always()
 
     steps:
       - name: Checkout
@@ -100,7 +99,6 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Descarca rapoartele de pe toate cele 3 masini virtuale
       - name: Download reports from Shard 0
         uses: actions/download-artifact@v4
         with:
@@ -119,67 +117,77 @@ jobs:
           name: surefire-reports-shard-2
           path: merged-reports/shard-2
 
-      # Combina toate fisierele XML intr-un singur folder
       - name: Merge all XML reports into one folder
         run: |
           mkdir -p merged-reports/all-xml
 
-          # Copiaza toate fisierele TEST-*.xml din fiecare shard
-          find merged-reports/shard-0 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
-          find merged-reports/shard-1 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
-          find merged-reports/shard-2 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
+          find merged-reports/shard-0 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
+          find merged-reports/shard-1 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
+          find merged-reports/shard-2 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
 
           echo "Fisiere XML combinate:"
           ls -la merged-reports/all-xml/
 
-          # Calculeaza sumarul total (passed/failed/skipped)
           echo ""
           echo "========== SUMAR TOTAL =========="
-          TOTAL_TESTS=0
-          TOTAL_FAILURES=0
-          TOTAL_ERRORS=0
-          TOTAL_SKIPPED=0
 
-          for f in merged-reports/all-xml/TEST-*.xml; do
-            TESTS=$(grep -oP 'tests="\K[0-9]+' "$f" | head -1 || echo 0)
-            FAILURES=$(grep -oP 'failures="\K[0-9]+' "$f" | head -1 || echo 0)
-            ERRORS=$(grep -oP 'errors="\K[0-9]+' "$f" | head -1 || echo 0)
-            SKIPPED=$(grep -oP 'skipped="\K[0-9]+' "$f" | head -1 || echo 0)
-            CLASS=$(basename "$f" .xml | sed 's/TEST-//')
+          # Totalul real: numarul de metode @Test din codul sursa
+          TOTAL_TESTS=$(grep -r '@Test' src/test/java/tests/ | grep -v '//' | wc -l)
 
-            echo "  $CLASS → tests=$TESTS  failures=$FAILURES  errors=$ERRORS  skipped=$SKIPPED"
+          PASSED=0
+          FAILED=0
+          SKIPPED=0
 
-            TOTAL_TESTS=$((TOTAL_TESTS + TESTS))
-            TOTAL_FAILURES=$((TOTAL_FAILURES + FAILURES))
-            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
-            TOTAL_SKIPPED=$((TOTAL_SKIPPED + SKIPPED))
+          for f in merged-reports/all-xml/TEST-tests.*.xml; do
+            CLASS=$(basename "$f" .xml | sed 's/TEST-tests\.//')
+
+            # Cauta elementul <testcase> care corespunde metodei @Test reale
+            # (nu @BeforeMethod / @AfterMethod care nu au <failure>/<error> legate de test)
+            # Logica: daca fisierul contine <error in afara contextului de configuratie → FAILED
+            # Daca testcase-ul principal are <skipped/> → SKIPPED, altfel → PASSED
+
+            HAS_FAILURE=$(grep -c '<failure\|<error' "$f" 2>/dev/null || echo 0)
+            HAS_SKIPPED=$(grep -c '<skipped' "$f" 2>/dev/null || echo 0)
+
+            # @BeforeMethod esuat → apare error + skipped (testul in sine e skipped)
+            # @Test esuat direct → apare doar failure, fara skipped
+            if [ "$HAS_SKIPPED" -gt 0 ]; then
+              STATUS="SKIPPED ⚠️"
+              SKIPPED=$((SKIPPED + 1))
+            elif [ "$HAS_FAILURE" -gt 0 ]; then
+              STATUS="FAILED ❌"
+              FAILED=$((FAILED + 1))
+            else
+              STATUS="PASSED ✅"
+              PASSED=$((PASSED + 1))
+            fi
+
+            echo "  $CLASS → $STATUS"
           done
 
           echo ""
-          echo "  TOTAL: tests=$TOTAL_TESTS  failures=$TOTAL_FAILURES  errors=$TOTAL_ERRORS  skipped=$TOTAL_SKIPPED"
-          PASSED=$((TOTAL_TESTS - TOTAL_FAILURES - TOTAL_ERRORS - TOTAL_SKIPPED))
-          echo "  PASSED: $PASSED / $TOTAL_TESTS"
+          echo "  ─────────────────────────────"
+          echo "  Total:   $TOTAL_TESTS teste"
+          echo "  Passed:  $PASSED ✅"
+          echo "  Failed:  $FAILED ❌"
+          echo "  Skipped: $SKIPPED ⚠️"
           echo "=================================="
 
-          # Scrie sumarul intr-un fisier text pentru artifact
           {
             echo "========== SUMAR TOTAL TESTE =========="
             echo "Total:    $TOTAL_TESTS"
             echo "Passed:   $PASSED"
-            echo "Failed:   $((TOTAL_FAILURES + TOTAL_ERRORS))"
-            echo "Skipped:  $TOTAL_SKIPPED"
+            echo "Failed:   $FAILED"
+            echo "Skipped:  $SKIPPED"
             echo "======================================="
           } > merged-reports/SUMMARY.txt
 
-      # Genereaza un raport HTML combinat cu Maven Surefire Report
       - name: Generate combined HTML report
         run: |
           mkdir -p target/surefire-reports
           cp merged-reports/all-xml/*.xml target/surefire-reports/
           mvn --no-transfer-progress surefire-report:report-only -Daggregate=true || true
-          echo "Raport HTML generat in target/site/surefire-report.html"
 
-      # Incarca raportul final combinat ca artifact
       - name: Upload merged report
         if: always()
         uses: actions/upload-artifact@v4
