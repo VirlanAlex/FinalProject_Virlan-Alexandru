@@ -1,9 +1,12 @@
 package sharedData;
 
 import modelObject.TestDataModel;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import utils.LogUtility;
@@ -30,6 +33,7 @@ public class SharedData {
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--window-size=1920,1080");
 
+        // Headless automat pe GitHub Actions (CI=true) sau cu -Dheadless=true
         boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
         boolean isHeadlessProp = Boolean.parseBoolean(System.getProperty("headless", "false"));
         if (isCI || isHeadlessProp) {
@@ -39,6 +43,20 @@ public class SharedData {
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.get(url("/"));
+        waitForAngularToLoad();
+    }
+
+
+    private void waitForAngularToLoad() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(30))
+                    .until(ExpectedConditions.elementToBeClickable(
+                            By.cssSelector("a[data-test='nav-sign-in']")
+                    ));
+            LogUtility.infoLog("Angular app loaded successfully.");
+        } catch (Exception e) {
+            LogUtility.infoLog("WARNING: Angular app may not have loaded fully: " + e.getMessage());
+        }
     }
 
     @AfterMethod(alwaysRun = true)
