@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Shard2" parallel="classes" thread-count="2">
-    <test name="Shard2Tests">
-        <classes>
-            <class name="tests.ChangePassword"/>
-            <class name="tests.CreateAccount"/>
-        </classes>
-    </test>
-</suite>
