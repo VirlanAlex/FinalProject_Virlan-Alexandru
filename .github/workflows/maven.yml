@@ -10,6 +10,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,12 +32,12 @@ jobs:
           sudo apt-get install -y google-chrome-stable || true
           google-chrome --version || true
 
-      - name: Run TestNG suite
-        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng.xml
+      - name: Run TestNG Shard ${{ matrix.shard }}
+        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard${{ matrix.shard }}.xml
 
-      - name: Upload Surefire reports
+      - name: Upload Surefire reports (Shard ${{ matrix.shard }})
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-reports
+          name: surefire-reports-shard-${{ matrix.shard }}
           path: target/surefire-reports
