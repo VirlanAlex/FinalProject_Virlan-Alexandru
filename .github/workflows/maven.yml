@@ -71,7 +71,7 @@ jobs:
           cat testng-shard.xml
 
       - name: Run TestNG Shard ${{ matrix.shard-index }}
-        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml
+        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml -Dheadless=true
 
       - name: Upload Surefire reports (Shard ${{ matrix.shard-index }})
         if: always()
