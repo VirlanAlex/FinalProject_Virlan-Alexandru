@@ -30,6 +30,7 @@ jobs:
           java-version: "17"
           cache: maven
 
+      # Instalare Chrome stabila si garantata pe GitHub Actions
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
@@ -77,6 +78,14 @@ jobs:
 
       - name: Run TestNG Shard ${{ matrix.shard-index }}
         run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml
+
+      - name: Upload screenshots on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-shard-${{ matrix.shard-index }}
+          path: target/screenshots/
+
 
       - name: Upload Surefire reports (Shard ${{ matrix.shard-index }})
         if: always()
