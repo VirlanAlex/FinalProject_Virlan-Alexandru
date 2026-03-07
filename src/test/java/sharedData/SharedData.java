@@ -2,6 +2,7 @@ package sharedData;
 
 import modelObject.TestDataModel;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -15,10 +16,10 @@ import org.testng.annotations.BeforeMethod;
 import utils.LogUtility;
 import utils.TestDataLoader;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.File;
 import java.time.Duration;
 
 public class SharedData {
@@ -35,8 +36,14 @@ public class SharedData {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
-        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--window-size=1920,1080");
+        options.addArguments("--remote-allow-origins=*");
+
+        // Evita detectia Cloudflare ca bot
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.setExperimentalOption("excludeSwitches", java.util.Arrays.asList("enable-automation"));
+        options.setExperimentalOption("useAutomationExtension", false);
+        options.addArguments("--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36");
 
         boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
         boolean isHeadlessProp = Boolean.parseBoolean(System.getProperty("headless", "false"));
@@ -45,24 +52,29 @@ public class SharedData {
         }
 
         driver = new ChromeDriver(options);
+
+        // Sterge proprietatea webdriver care tradeaza automatizarea
+        ((JavascriptExecutor) driver).executeScript(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        );
+
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-
-        LogUtility.infoLog("Navigating to: " + url("/"));
         driver.get(url("/"));
-        LogUtility.infoLog("Current URL after get: " + driver.getCurrentUrl());
-        LogUtility.infoLog("Page title: " + driver.getTitle());
 
-        // Asteapta Angular sa randeze navbar-ul
+        LogUtility.infoLog("URL: " + driver.getCurrentUrl() + " | Title: " + driver.getTitle());
+
+        // Asteapta sa treaca Cloudflare si sa se incarce Angular
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(30))
+            new WebDriverWait(driver, Duration.ofSeconds(60))
                     .until(ExpectedConditions.elementToBeClickable(
                             By.cssSelector("a[data-test='nav-sign-in']")
                     ));
-            LogUtility.infoLog("Navbar loaded OK.");
+            LogUtility.infoLog("Page loaded OK.");
         } catch (Exception e) {
-            // Salveaza screenshot + page source ca sa vedem ce a afisat browserul
             takeDebugSnapshot("SETUP_FAILED_" + testName);
-            throw new RuntimeException("Navbar not loaded after 30s. URL=" + driver.getCurrentUrl() + " Title=" + driver.getTitle(), e);
+            throw new RuntimeException(
+                    "Page not loaded. URL=" + driver.getCurrentUrl() +
+                            " Title=" + driver.getTitle(), e);
         }
     }
 
@@ -83,21 +95,13 @@ public class SharedData {
 
     private void takeDebugSnapshot(String label) {
         try {
-            // Screenshot
-            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            String screenshotPath = "target/screenshots/" + label + ".png";
             Files.createDirectories(Paths.get("target/screenshots"));
-            Files.copy(screenshot.toPath(), Paths.get(screenshotPath));
-            LogUtility.infoLog("Screenshot saved: " + screenshotPath);
-
-            // Page source
-            String sourcePath = "target/screenshots/" + label + ".html";
-            Files.writeString(Paths.get(sourcePath), driver.getPageSource());
-            LogUtility.infoLog("Page source saved: " + sourcePath);
-
-            LogUtility.infoLog("URL at failure: " + driver.getCurrentUrl());
+            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            Files.copy(screenshot.toPath(), Paths.get("target/screenshots/" + label + ".png"));
+            Files.writeString(Paths.get("target/screenshots/" + label + ".html"), driver.getPageSource());
+            LogUtility.infoLog("Snapshot saved: target/screenshots/" + label);
         } catch (IOException ex) {
-            LogUtility.infoLog("Could not save debug snapshot: " + ex.getMessage());
+            LogUtility.infoLog("Could not save snapshot: " + ex.getMessage());
         }
     }
 
