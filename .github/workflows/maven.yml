@@ -30,16 +30,18 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Instalare Chrome stabila si garantata pe GitHub Actions
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
 
-      - name: Verify Chrome installation
+      # Xvfb = display virtual → Chrome ruleaza NON-headless
+      # Cloudflare nu mai detecteaza ca e bot
+      - name: Start Xvfb virtual display
         run: |
-          google-chrome --version
-          which google-chrome
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1920x1080x24 &
+          echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Generate testng-shard.xml for this machine
         run: |
@@ -85,7 +87,7 @@ jobs:
         with:
           name: screenshots-shard-${{ matrix.shard-index }}
           path: target/screenshots/
-
+          if-no-files-found: ignore
 
       - name: Upload Surefire reports (Shard ${{ matrix.shard-index }})
         if: always()
@@ -146,14 +148,12 @@ jobs:
           echo "========== SUMAR TOTAL =========="
 
           TOTAL_TESTS=$(grep -r '@Test' src/test/java/tests/ | grep -v '//' | wc -l)
-
           PASSED=0
           FAILED=0
           SKIPPED=0
 
           for f in merged-reports/all-xml/TEST-tests.*.xml; do
             CLASS=$(basename "$f" .xml | sed 's/TEST-tests\.//')
-
             HAS_FAILURE=$(grep -c '<failure\|<error' "$f" 2>/dev/null || echo 0)
             HAS_SKIPPED=$(grep -c '<skipped' "$f" 2>/dev/null || echo 0)
 
@@ -167,7 +167,6 @@ jobs:
               STATUS="PASSED ✅"
               PASSED=$((PASSED + 1))
             fi
-
             echo "  $CLASS → $STATUS"
           done
 

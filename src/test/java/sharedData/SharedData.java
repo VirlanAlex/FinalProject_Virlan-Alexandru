@@ -2,7 +2,6 @@ package sharedData;
 
 import modelObject.TestDataModel;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +15,10 @@ import org.testng.annotations.BeforeMethod;
 import utils.LogUtility;
 import utils.TestDataLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.File;
 import java.time.Duration;
 
 public class SharedData {
@@ -38,32 +37,14 @@ public class SharedData {
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-allow-origins=*");
-
-        // Evita detectia Cloudflare ca bot
-        options.addArguments("--disable-blink-features=AutomationControlled");
-        options.setExperimentalOption("excludeSwitches", java.util.Arrays.asList("enable-automation"));
-        options.setExperimentalOption("useAutomationExtension", false);
-        options.addArguments("--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36");
-
-        boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
-        boolean isHeadlessProp = Boolean.parseBoolean(System.getProperty("headless", "false"));
-        if (isCI || isHeadlessProp) {
-            options.addArguments("--headless=new");
-        }
+        // NU mai folosim --headless deloc - Xvfb din workflow ofera display virtual
 
         driver = new ChromeDriver(options);
-
-        // Sterge proprietatea webdriver care tradeaza automatizarea
-        ((JavascriptExecutor) driver).executeScript(
-                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-        );
-
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.get(url("/"));
 
         LogUtility.infoLog("URL: " + driver.getCurrentUrl() + " | Title: " + driver.getTitle());
 
-        // Asteapta sa treaca Cloudflare si sa se incarce Angular
         try {
             new WebDriverWait(driver, Duration.ofSeconds(60))
                     .until(ExpectedConditions.elementToBeClickable(
