@@ -2,6 +2,8 @@ package tests;
 
 import modelObject.RegisterUserModel;
 import modelObject.UserModel;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -21,26 +23,35 @@ public class SetUpTwoFactorAuthentication extends SharedData {
         LogUtility.infoLog("Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)");
 
         String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
-
         RegisterUserModel registerUser = RegisterUserModel.fromRegisterData(getData().getRegister(), uniqueEmail);
         String regPass = getData().getRegister().getRegisterPassword();
 
-        navigateTo("/auth/login");
+        // Pasul 1: navigare interna Angular la pagina de sign in
+        HeaderComponent header = new HeaderComponent(driver);
+        header.clickSignIn();
 
+        // Pasul 2: deschide formularul de inregistrare si inregistreaza utilizatorul
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.openRegisterForm();
         registerPage.register(registerUser);
 
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(d -> d.getCurrentUrl().contains("/auth/login") || d.getCurrentUrl().contains("/account"));
+        // Pasul 3: asteapta sa ajunga pe pagina de login dupa inregistrare
+        new WebDriverWait(driver, Duration.ofSeconds(15))
+                .until(ExpectedConditions.presenceOfElementLocated(
+                        By.cssSelector("a[data-test='nav-sign-in'], input#email")
+                ));
 
-        navigateTo("/auth/login");
+        // Pasul 4: daca nu suntem deja pe pagina de login, click Sign In
+        if (!driver.getCurrentUrl().contains("/auth/login")) {
+            header.clickSignIn();
+        }
 
+        // Pasul 5: login cu noul user inregistrat
         UserModel loginUser = new UserModel(uniqueEmail, regPass);
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
 
-        HeaderComponent header = new HeaderComponent(driver);
+        // Pasul 6: TOTP setup
         ProfilePage profilePage = new ProfilePage(driver);
-
         header.clickProfile();
 
         String secret = profilePage.getTotpSecret();

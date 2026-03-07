@@ -14,12 +14,12 @@ public class BuyWithLogIn extends SharedData {
     public void buyWithLogin() {
         LogUtility.infoLog("Test flow: Buy with login (login -> product -> cart -> checkout -> payment)");
 
-        navigateTo("/auth/login");
+        HeaderComponent header = new HeaderComponent(driver);
+        header.clickSignIn();
 
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(user, getData().getAccountUrlPart());
 
-        HeaderComponent header = new HeaderComponent(driver);
         HomePage homePage = new HomePage(driver);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);

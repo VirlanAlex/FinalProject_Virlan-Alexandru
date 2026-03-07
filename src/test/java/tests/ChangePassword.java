@@ -14,16 +14,15 @@ public class ChangePassword extends SharedData {
     public void changePassword() {
         LogUtility.infoLog("Test flow: Change password");
 
-        navigateTo("/auth/login");
+        HeaderComponent header = new HeaderComponent(driver);
+        header.clickSignIn();
 
         UserModel loginUser = new UserModel(getData().getValidEmail(), getData().getValidPassword());
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
 
         UserModel cpUser = new UserModel(getData().getValidEmail(), getData().getValidPassword(), getData().getValidPassword(), getData().getNewPassword());
 
-        HeaderComponent header = new HeaderComponent(driver);
         ProfilePage profilePage = new ProfilePage(driver);
-
         header.clickProfile();
         profilePage.changePassword(cpUser);
     }

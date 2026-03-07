@@ -14,8 +14,6 @@ public class BuyWithoutLogIn extends SharedData {
     public void buyProducts() {
         LogUtility.infoLog("Test flow: Buy without login (product -> cart -> login in checkout -> payment)");
 
-        navigateTo("/");
-
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
 
         HomePage homePage = new HomePage(driver);
