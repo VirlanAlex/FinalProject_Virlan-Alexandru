@@ -35,6 +35,66 @@ jobs:
         with:
           chrome-version: stable
 
+      # Xvfb = display virtual → Chrome ruleaza NON-headless
+      # Cloudflare nu mai detecteaza ca e bot
+      - name: Start Xvfb virtual display
+        run: |
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1920x1080x24 &
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      - name: Generate testng-shard.xml for this machine
+        run: |
+          SHARD_INDEX=${{ matrix.shard-index }}
+          SHARD_TOTAL=${{ matrix.shard-total }}
+
+          ALL_CLASSES=$(find src/test/java/tests -name "*.java" \
+            | sed 's|src/test/java/||' \
+            | sed 's|/|.|g' \
+            | sed 's|\.java$||' \
+            | sort)
+
+          SHARD_CLASSES=""
+          INDEX=0
+          while IFS= read -r CLASS; do
+            MOD=$((INDEX % SHARD_TOTAL))
+            if [ "$MOD" -eq "$SHARD_INDEX" ]; then
+              SHARD_CLASSES="${SHARD_CLASSES}        <class name=\"${CLASS}\"/>\n"
+            fi
+            INDEX=$((INDEX + 1))
+          done <<< "$ALL_CLASSES"
+
+          {
+            echo '<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">'
+            echo "<suite name=\"Shard${SHARD_INDEX}\" parallel=\"classes\" thread-count=\"2\">"
+            echo "    <test name=\"ShardTests\">"
+            echo "        <classes>"
+            printf "$SHARD_CLASSES"
+            echo "        </classes>"
+            echo "    </test>"
+            echo "</suite>"
+          } > testng-shard.xml
+
+          echo "--- testng-shard.xml generat ---"
+          cat testng-shard.xml
+
+      - name: Run TestNG Shard ${{ matrix.shard-index }}
+        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml
+
+      - name: Upload screenshots on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-shard-${{ matrix.shard-index }}
+          path: target/screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Surefire reports (Shard ${{ matrix.shard-index }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-shard-${{ matrix.shard-index }}
+          path: target/surefire-reports
 
   # ─────────────────────────────────────────────
   # JOB 2: Insumeaza rapoartele dupa toate shardurile
