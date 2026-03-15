@@ -32,6 +32,7 @@ public class SharedData {
         LogUtility.startTest(testName);
 
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
@@ -41,13 +42,9 @@ public class SharedData {
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-
-        // Incarcam doar "/" - trece Cloudflare
-        // Testele folosesc clickSignIn() pentru a naviga la login (navigare interna Angular)
         driver.get(url("/"));
         LogUtility.infoLog("URL: " + driver.getCurrentUrl() + " | Title: " + driver.getTitle());
 
-        // Asteapta sa treaca Cloudflare si Angular sa randeze navbar-ul
         try {
             new WebDriverWait(driver, Duration.ofSeconds(60))
                     .until(ExpectedConditions.elementToBeClickable(
@@ -65,8 +62,14 @@ public class SharedData {
     @AfterMethod(alwaysRun = true)
     public void clearEnvironment(ITestResult result) {
         try {
-            if (driver != null && result.getStatus() == ITestResult.FAILURE) {
-                takeDebugSnapshot("TEST_FAILED_" + testName);
+            if (result.getStatus() == ITestResult.SUCCESS) {
+                LogUtility.passLog(testName);
+            } else if (result.getStatus() == ITestResult.FAILURE) {
+                String reason = result.getThrowable() != null ? result.getThrowable().getMessage() : "unknown";
+                LogUtility.failLog(testName, reason);
+                if (driver != null) takeDebugSnapshot("TEST_FAILED_" + testName);
+            } else if (result.getStatus() == ITestResult.SKIP) {
+                LogUtility.skipLog(testName);
             }
         } finally {
             try {

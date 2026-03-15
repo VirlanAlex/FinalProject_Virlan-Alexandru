@@ -2,7 +2,6 @@ package tests;
 
 import modelObject.RegisterUserModel;
 import modelObject.UserModel;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -26,31 +25,25 @@ public class SetUpTwoFactorAuthentication extends SharedData {
         RegisterUserModel registerUser = RegisterUserModel.fromRegisterData(getData().getRegister(), uniqueEmail);
         String regPass = getData().getRegister().getRegisterPassword();
 
-        // Pasul 1: navigare interna Angular la pagina de sign in
         HeaderComponent header = new HeaderComponent(driver);
+
+        // Pasul 1: navigare la sign in
         header.clickSignIn();
 
-        // Pasul 2: deschide formularul de inregistrare si inregistreaza utilizatorul
+        // Pasul 2: register
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.openRegisterForm();
         registerPage.register(registerUser);
 
-        // Pasul 3: asteapta sa ajunga pe pagina de login dupa inregistrare
-        new WebDriverWait(driver, Duration.ofSeconds(15))
-                .until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("a[data-test='nav-sign-in'], input#email")
-                ));
+        // Pasul 3: dupa register Angular redirecteaza la /auth/login — asteptam URL-ul explicit
+        new WebDriverWait(driver, Duration.ofSeconds(20))
+                .until(ExpectedConditions.urlContains("/auth/login"));
 
-        // Pasul 4: daca nu suntem deja pe pagina de login, click Sign In
-        if (!driver.getCurrentUrl().contains("/auth/login")) {
-            header.clickSignIn();
-        }
-
-        // Pasul 5: login cu noul user inregistrat
+        // Pasul 4: login cu noul user
         UserModel loginUser = new UserModel(uniqueEmail, regPass);
         new SignInPage(driver).loginAndAssert(loginUser, getData().getAccountUrlPart());
 
-        // Pasul 6: TOTP setup
+        // Pasul 5: TOTP setup
         ProfilePage profilePage = new ProfilePage(driver);
         header.clickProfile();
 
@@ -63,6 +56,6 @@ public class SetUpTwoFactorAuthentication extends SharedData {
         String errorText = profilePage.getTotpErrorMessage();
         Assert.assertEquals(errorText, getData().getTotpErrorMessage(), "TOTP error message is missing or incorrect");
 
-        LogUtility.infoLog("Generated unique email for registration: " + uniqueEmail);
+        LogUtility.infoLog("Generated unique email: " + uniqueEmail);
     }
 }

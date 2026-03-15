@@ -10,7 +10,9 @@ public class LogUtility {
     }
 
     public static void startTest(String testName) {
-        logger.info("***** Execution started: {} *****", testName);
+        logger.info("========================================");
+        logger.info("TEST STARTED: {}", testName);
+        logger.info("========================================");
     }
 
     public static void infoLog(String message) {
@@ -29,7 +31,28 @@ public class LogUtility {
         logger.error("{}", message);
     }
 
+    public static void passLog(String testName) {
+        logger.info("----------------------------------------");
+        logger.info("TEST PASSED: {}", testName);
+        logger.info("----------------------------------------");
+    }
+
+    public static void failLog(String testName, String reason) {
+        logger.error("----------------------------------------");
+        logger.error("TEST FAILED: {}", testName);
+        logger.error("REASON: {}", reason);
+        logger.error("----------------------------------------");
+    }
+
+    public static void skipLog(String testName) {
+        logger.warn("----------------------------------------");
+        logger.warn("TEST SKIPPED: {}", testName);
+        logger.warn("----------------------------------------");
+    }
+
     public static void finishTest(String testName) {
-        logger.info("***** Execution finished: {} *****", testName);
+        logger.info("========================================");
+        logger.info("TEST FINISHED: {}", testName);
+        logger.info("========================================");
     }
 }

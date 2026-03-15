@@ -6,10 +6,10 @@ import org.openqa.selenium.WebDriver;
 
 public class SignInPage extends BasePage {
 
-    private final By emailInput = By.cssSelector("input#email");
-    private final By passwordInput = By.cssSelector("input#password");
-    private final By loginButton = By.cssSelector("input.btnSubmit");
-    private final By loginError = By.cssSelector(".alert-danger, .invalid-feedback, [role='alert']");
+    private final By emailInput    = By.cssSelector("input[data-test='email']");
+    private final By passwordInput = By.cssSelector("input[data-test='password']");
+    private final By loginButton   = By.cssSelector("[data-test='login-submit']");
+    private final By loginError    = By.cssSelector(".alert-danger, .invalid-feedback, [role='alert']");
 
     public SignInPage(WebDriver driver) {
         super(driver);
@@ -25,18 +25,9 @@ public class SignInPage extends BasePage {
     }
 
     public void loginAndAssert(UserModel user, String accountUrlPart) {
-        String before = driver.getCurrentUrl();
+        elements.waitUrlContains("/auth/login");
         login(user);
-
-        elements.waitUntil(d -> !d.getCurrentUrl().equals(before) || elements.isPresent(loginError));
-
-        if (driver.getCurrentUrl().contains(accountUrlPart)) {
-            logStep("Login validated");
-            return;
-        }
-
-        String err = elements.firstText(loginError);
-        logError("Login failed. Current url: " + driver.getCurrentUrl() + (err.isBlank() ? "" : " | UI says: " + err));
-        throw new AssertionError("Login failed. Current url: " + driver.getCurrentUrl() + (err.isBlank() ? "" : " | UI says: " + err));
+        elements.waitUrlContains(accountUrlPart);
+        logStep("Login validated — URL contains: " + accountUrlPart);
     }
 }
