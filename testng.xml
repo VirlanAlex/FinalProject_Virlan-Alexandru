@@ -14,7 +14,7 @@
 
     <test name="FrontEnd Tests">
         <packages>
-            <package name="frontend.tests"/>
+            <package name="frontEnd.tests"/>
         </packages>
     </test>
 
