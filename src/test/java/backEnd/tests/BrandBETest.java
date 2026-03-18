@@ -12,16 +12,6 @@ import backEnd.services.UserService;
 import backEnd.types.ResponseStatusType;
 import backEnd.utils.LogUtility;
 
-/**
- * BRAND BE TEST - REFACTORIZAT
- * 
- * CRUD workflow: Create -> Read -> Update -> Read -> Delete -> Verify Not Found
- * 
- * Request/Response separation ensures:
- * ✓ Clean test logic
- * ✓ Clear separation of concerns
- * ✓ Easy to debug and maintain
- */
 @Feature("@FEATURE - BRAND")
 @Story("@STORY - BRAND CRUD OPERATIONS")
 public class BrandBETest {

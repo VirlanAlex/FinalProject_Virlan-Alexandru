@@ -9,19 +9,8 @@ import backEnd.types.EndPointType;
 import backEnd.types.RequestMethodType;
 import backEnd.utils.LogUtility;
 
-/**
- * BRAND SERVICE - REFACTORIZAT
- * 
- * Flux clar:
- * 1. Request - construieste request
- * 2. API Call - executa request
- * 3. Response - parseaza si valideaza response
- */
 public class BrandService extends CommonService {
-    
-    /**
-     * CREATE BRAND
-     */
+
     public ResponseBrandModel createBrand(RequestBrandModel requestBody) {
         LogUtility.infoLog("========== STEP 1: CREATE BRAND ==========");
         
@@ -42,10 +31,7 @@ public class BrandService extends CommonService {
         LogUtility.infoLog("========== Brand created successfully ==========\n");
         return brandResponse.getBrandModel();
     }
-    
-    /**
-     * GET SPECIFIC BRAND
-     */
+
     public void checkSpecificBrand(String brandId, int expectedStatusCode) {
         LogUtility.infoLog("========== STEP 2: CHECK BRAND ==========");
         
@@ -72,10 +58,7 @@ public class BrandService extends CommonService {
         
         LogUtility.infoLog("========== Brand check completed ==========\n");
     }
-    
-    /**
-     * UPDATE BRAND
-     */
+
     public void modifySpecificBrand(RequestBrandModel requestBody, String brandId) {
         LogUtility.infoLog("========== STEP 3: UPDATE BRAND ==========");
         
@@ -95,10 +78,7 @@ public class BrandService extends CommonService {
         
         LogUtility.infoLog("========== Brand updated successfully ==========\n");
     }
-    
-    /**
-     * DELETE BRAND
-     */
+
     public void deleteSpecificBrand(String token, String brandId) {
         LogUtility.infoLog("========== STEP 6: DELETE BRAND ==========");
         

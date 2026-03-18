@@ -9,16 +9,6 @@ import backEnd.services.ReportService;
 import backEnd.services.UserService;
 import backEnd.utils.LogUtility;
 
-/**
- * REPORT BE TEST - REFACTORIZAT
- * 
- * Workflow: Login admin -> Generate report with validation
- * 
- * Request/Response separation ensures:
- * ✓ Clean test logic
- * ✓ Clear separation of concerns
- * ✓ Easy to debug and maintain
- */
 @Feature("@FEATURE - REPORT")
 @Story("@STORY - REPORT OPERATIONS")
 public class ReportBETest {

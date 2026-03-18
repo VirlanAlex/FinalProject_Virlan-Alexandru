@@ -1,7 +1,5 @@
 package backEnd.types;
 
-import io.restassured.response.Response;
-
 public class EndPointType {
     public static final String BRAND_CREATE_ENDPOINT = "/brands";
     public static final String BRAND_REQUEST_ENDPOINT = "/brands/";

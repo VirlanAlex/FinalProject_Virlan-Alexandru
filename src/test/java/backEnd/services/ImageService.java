@@ -7,19 +7,9 @@ import backEnd.types.EndPointType;
 import backEnd.types.RequestMethodType;
 import backEnd.utils.LogUtility;
 
-/**
- * IMAGE SERVICE - REFACTORIZAT
- * 
- * Flux clar:
- * 1. Request - construieste request
- * 2. API Call - executa request
- * 3. Response - parseaza si valideaza response
- */
+
 public class ImageService extends CommonService {
-    
-    /**
-     * GET ALL IMAGES
-     */
+
     public void obtainAllImages() {
         LogUtility.infoLog("========== STEP 1: GET ALL IMAGES ==========");
         

@@ -13,14 +13,6 @@ import backEnd.types.RequestMethodType;
 import backEnd.types.ResponseStatusType;
 import backEnd.utils.LogUtility;
 
-/**
- * USER SERVICE - UNCHANGED ✗
- * 
- * This service is NOT modified by the refactoring.
- * It provides user-related operations: create, login, check, logout, delete
- * 
- * Used by Brand, Image, Report tests for admin authentication
- */
 public class UserService extends CommonService {
 
     // Aceasta clasa reprezinta metodele de la serviciul User de pe Swagger

@@ -7,19 +7,8 @@ import backEnd.types.EndPointType;
 import backEnd.types.RequestMethodType;
 import backEnd.utils.LogUtility;
 
-/**
- * REPORT SERVICE - REFACTORIZAT
- * 
- * Flux clar:
- * 1. Request - construieste request
- * 2. API Call - executa request
- * 3. Response - parseaza si valideaza response
- */
 public class ReportService extends CommonService {
-    
-    /**
-     * GENERATE AVERAGE SALES PER MONTH REPORT
-     */
+
     public void generateAverageSalesPerMonthReport(String token) {
         LogUtility.infoLog("========== STEP 2: GENERATE REPORT ==========");
         

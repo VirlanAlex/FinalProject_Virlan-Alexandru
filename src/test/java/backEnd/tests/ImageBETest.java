@@ -6,16 +6,6 @@ import org.testng.annotations.Test;
 import backEnd.services.ImageService;
 import backEnd.utils.LogUtility;
 
-/**
- * IMAGE BE TEST - REFACTORIZAT
- * 
- * Workflow: Get all images with validation
- * 
- * Request/Response separation ensures:
- * ✓ Clean test logic
- * ✓ Clear separation of concerns
- * ✓ Easy to debug and maintain
- */
 @Feature("@FEATURE - IMAGE")
 @Story("@STORY - IMAGE OPERATIONS")
 public class ImageBETest {
