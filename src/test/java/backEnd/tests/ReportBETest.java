@@ -16,32 +16,21 @@ public class ReportBETest {
     @Test(description = "Generate average sales per month report with admin authentication")
     public void reportTest() {
         
-        LogUtility.infoLog("\n\n╔════════════════════════════════════════════════════════════╗");
-        LogUtility.infoLog("║          REPORT TEST STARTED                                 ║");
-        LogUtility.infoLog("╚════════════════════════════════════════════════════════════╝\n");
+        LogUtility.infoLog("REPORT TEST STARTED");
         
         UserService userService = new UserService();
         ReportService reportService = new ReportService();
-        
-        // ========== STEP 1: LOGIN ADMIN USER ==========
-        LogUtility.infoLog("========== STEP 1: LOGIN ADMIN USER ==========");
-        RequestUserLoginModel adminLoginRequest = new RequestUserLoginModel(
-            "admin@practicesoftwaretesting.com", 
-            "welcome01"
-        );
+
+        LogUtility.infoLog("STEP 1: LOGIN ADMIN USER");
+        RequestUserLoginModel adminLoginRequest = new RequestUserLoginModel("admin@practicesoftwaretesting.com", "welcome01");
         ResponseUserLoginModel adminLoginResponse = userService.loginUser(adminLoginRequest);
         String adminToken = adminLoginResponse.getAccess_token();
-        LogUtility.infoLog("✓ Admin logged in successfully");
-        
-        
-        // ========== STEP 2: GENERATE REPORT ==========
-        LogUtility.infoLog("\n========== STEP 2: GENERATE REPORT ==========");
+        LogUtility.infoLog("Admin logged in successfully");
+
+        LogUtility.infoLog("STEP 2: GENERATE REPORT");
         reportService.generateAverageSalesPerMonthReport(adminToken);
-        LogUtility.infoLog("✓ Report generated successfully");
-        
-        
-        LogUtility.infoLog("\n\n╔════════════════════════════════════════════════════════════╗");
-        LogUtility.infoLog("║          ✓✓✓ REPORT TEST PASSED ✓✓✓                            ║");
-        LogUtility.infoLog("╚════════════════════════════════════════════════════════════╝\n\n");
+        LogUtility.infoLog("Report generated successfully");
+
+        LogUtility.infoLog("REPORT TEST ENDED");
     }
 }
