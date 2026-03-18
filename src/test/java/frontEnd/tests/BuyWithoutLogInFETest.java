@@ -3,17 +3,18 @@ package frontEnd.tests;
 import frontEnd.pages.*;
 import frontEnd.helpMethods.AlertMethods;
 import frontEnd.modelObject.UserModel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import frontEnd.sharedData.SharedData;
-import frontEnd.utils.LogUtility;
 
+@Feature("@FEATURE - BUY")
+@Story("@STORY - BUY WITHOUT LOGIN OPERATIONS")
 public class BuyWithoutLogInFETest extends SharedData {
 
-    @Test
+    @Test(description = "Test flow: Buy without login (product -> cart -> login in checkout -> payment)")
     public void buyProducts() {
-        LogUtility.infoLog("Test flow: Buy without login (product -> cart -> login in checkout -> payment)");
-
         UserModel user = new UserModel(getData().getValidEmail(), getData().getValidPassword());
 
         HomePage homePage = new HomePage(driver);

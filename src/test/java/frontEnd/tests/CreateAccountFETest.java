@@ -1,18 +1,20 @@
 package frontEnd.tests;
 
 import frontEnd.modelObject.RegisterUserModel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import frontEnd.pages.HeaderComponent;
 import frontEnd.pages.RegisterPage;
 import frontEnd.sharedData.SharedData;
 import frontEnd.utils.LogUtility;
 
+@Feature("@FEATURE - ACCOUNT")
+@Story("@STORY - CREATE ACCOUNT OPERATIONS")
 public class CreateAccountFETest extends SharedData {
 
-    @Test
+    @Test(description = "Test flow: Create account (register new user)")
     public void startAccount() {
-        LogUtility.infoLog("Test flow: Create account (register new user)");
-
         String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
 
         RegisterUserModel user = RegisterUserModel.fromRegisterData(getData().getRegister(), uniqueEmail);

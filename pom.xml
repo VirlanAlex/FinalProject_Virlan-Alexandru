@@ -103,6 +103,14 @@
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     <printSummary>true</printSummary>
                     <trimStackTrace>false</trimStackTrace>
+
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.testng.AllureTestNg</value>
+                        </property>
+                    </properties>
+
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
                     </argLine>

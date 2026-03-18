@@ -2,6 +2,8 @@ package frontEnd.tests;
 
 import frontEnd.modelObject.RegisterUserModel;
 import frontEnd.modelObject.UserModel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -12,14 +14,14 @@ import frontEnd.pages.RegisterPage;
 import frontEnd.pages.SignInPage;
 import frontEnd.sharedData.SharedData;
 import frontEnd.utils.LogUtility;
-
 import java.time.Duration;
 
+@Feature("@FEATURE - 2 FACTOR AUTHENTICATION")
+@Story("@STORY - 2 FACTOR AUTHENTICATION OPERATIONS")
 public class SetUpTwoFactorAuthenticationFETest extends SharedData {
 
-    @Test
+    @Test(description = "Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)")
     public void setUpAuthentication() {
-        LogUtility.infoLog("Test flow: Set up Two-Factor Authentication (register -> login -> profile -> TOTP)");
 
         String uniqueEmail = getData().getRegister().getEmailPrefix() + System.currentTimeMillis() + getData().getRegister().getEmailDomain();
         RegisterUserModel registerUser = RegisterUserModel.fromRegisterData(getData().getRegister(), uniqueEmail);

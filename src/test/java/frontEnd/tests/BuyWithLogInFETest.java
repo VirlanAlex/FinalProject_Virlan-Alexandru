@@ -3,14 +3,18 @@ package frontEnd.tests;
 import frontEnd.pages.*;
 import frontEnd.helpMethods.AlertMethods;
 import frontEnd.modelObject.UserModel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import frontEnd.sharedData.SharedData;
 import frontEnd.utils.LogUtility;
 
+@Feature("@FEATURE - BUY")
+@Story("@STORY - BUY WITH LOGIN OPERATIONS")
 public class BuyWithLogInFETest extends SharedData {
 
-    @Test
+    @Test(description = "Buy with login workflow")
     public void buyWithLogin() {
         LogUtility.infoLog("Test flow: Buy with login (login -> product -> cart -> checkout -> payment)");
 

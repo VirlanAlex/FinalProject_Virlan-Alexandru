@@ -1,6 +1,8 @@
 package frontEnd.tests;
 
 import frontEnd.modelObject.UserModel;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import frontEnd.pages.HeaderComponent;
 import frontEnd.pages.ProfilePage;
@@ -8,11 +10,12 @@ import frontEnd.pages.SignInPage;
 import frontEnd.sharedData.SharedData;
 import frontEnd.utils.LogUtility;
 
+@Feature("@FEATURE - PASSWORD")
+@Story("@STORY - CHANGE PASSWORD OPERATIONS")
 public class ChangePasswordFETest extends SharedData {
 
-    @Test
+    @Test(description = "Test flow: Change password")
     public void changePassword() {
-        LogUtility.infoLog("Test flow: Change password");
 
         HeaderComponent header = new HeaderComponent(driver);
         header.clickSignIn();
