@@ -48,7 +48,9 @@ jobs:
           SHARD_INDEX=${{ matrix.shard-index }}
           SHARD_TOTAL=${{ matrix.shard-total }}
 
-          ALL_CLASSES=$(find src/test/java/tests -name "*.java" \
+          # FIX: cauta in AMBELE foldere — backEnd si frontEnd
+          ALL_CLASSES=$(find src/test/java/backEnd/tests src/test/java/frontEnd/tests \
+            -name "*.java" \
             | sed 's|src/test/java/||' \
             | sed 's|/|.|g' \
             | sed 's|\.java$||' \
@@ -59,14 +61,21 @@ jobs:
           while IFS= read -r CLASS; do
             MOD=$((INDEX % SHARD_TOTAL))
             if [ "$MOD" -eq "$SHARD_INDEX" ]; then
-              SHARD_CLASSES="${SHARD_CLASSES}        <class name=\"${CLASS}\"/>\n"
+              SHARD_CLASSES="${SHARD_CLASSES}            <class name=\"${CLASS}\"/>\n"
             fi
             INDEX=$((INDEX + 1))
           done <<< "$ALL_CLASSES"
 
+          # FIX: include listener-ul Allure in shard XML
           {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
             echo '<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">'
             echo "<suite name=\"Shard${SHARD_INDEX}\" parallel=\"classes\" thread-count=\"2\">"
+            echo ""
+            echo "    <listeners>"
+            echo "        <listener class-name=\"io.qameta.allure.testng.AllureTestNg\"/>"
+            echo "    </listeners>"
+            echo ""
             echo "    <test name=\"ShardTests\">"
             echo "        <classes>"
             printf "$SHARD_CLASSES"
@@ -78,8 +87,9 @@ jobs:
           echo "--- testng-shard.xml generat ---"
           cat testng-shard.xml
 
+      # FIX: -Dtestng.suite suprascrie proprietatea din pom.xml
       - name: Run TestNG Shard ${{ matrix.shard-index }}
-        run: mvn -B -e test -Dsurefire.suiteXmlFiles=testng-shard.xml
+        run: mvn -B -e test -Dtestng.suite=testng-shard.xml
 
       - name: Upload screenshots on failure
         if: always()
@@ -95,6 +105,15 @@ jobs:
         with:
           name: surefire-reports-shard-${{ matrix.shard-index }}
           path: target/surefire-reports
+
+      # FIX: Upload allure-results per shard
+      - name: Upload Allure results (Shard ${{ matrix.shard-index }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-shard-${{ matrix.shard-index }}
+          path: target/allure-results/
+          if-no-files-found: ignore
 
   # ─────────────────────────────────────────────
   # JOB 2: Insumeaza rapoartele dupa toate shardurile
@@ -133,13 +152,36 @@ jobs:
           name: surefire-reports-shard-2
           path: merged-reports/shard-2
 
+      # FIX: Download allure-results din toate shardurile
+      - name: Download Allure results from Shard 0
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-shard-0
+          path: merged-allure-results/
+        continue-on-error: true
+
+      - name: Download Allure results from Shard 1
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-shard-1
+          path: merged-allure-results/
+        continue-on-error: true
+
+      - name: Download Allure results from Shard 2
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-shard-2
+          path: merged-allure-results/
+        continue-on-error: true
+
       - name: Merge all XML reports into one folder
         run: |
           mkdir -p merged-reports/all-xml
 
-          find merged-reports/shard-0 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
-          find merged-reports/shard-1 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
-          find merged-reports/shard-2 -name "TEST-tests.*.xml" -exec cp {} merged-reports/all-xml/ \;
+          # FIX: pattern generic — prinde TEST-backEnd.tests.* si TEST-frontEnd.tests.*
+          find merged-reports/shard-0 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
+          find merged-reports/shard-1 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
+          find merged-reports/shard-2 -name "TEST-*.xml" -exec cp {} merged-reports/all-xml/ \;
 
           echo "Fisiere XML combinate:"
           ls -la merged-reports/all-xml/
@@ -147,13 +189,16 @@ jobs:
           echo ""
           echo "========== SUMAR TOTAL =========="
 
-          TOTAL_TESTS=$(grep -r '@Test' src/test/java/tests/ | grep -v '//' | wc -l)
+          # FIX: cauta @Test in ambele foldere
+          TOTAL_TESTS=$(grep -r '@Test' src/test/java/backEnd/tests/ src/test/java/frontEnd/tests/ \
+            | grep -v '//' | wc -l)
           PASSED=0
           FAILED=0
           SKIPPED=0
 
-          for f in merged-reports/all-xml/TEST-tests.*.xml; do
-            CLASS=$(basename "$f" .xml | sed 's/TEST-tests\.//')
+          for f in merged-reports/all-xml/TEST-*.xml; do
+            [ -f "$f" ] || continue
+            CLASS=$(basename "$f" .xml | sed 's/^TEST-//')
             HAS_FAILURE=$(grep -c '<failure\|<error' "$f" 2>/dev/null || echo 0)
             HAS_SKIPPED=$(grep -c '<skipped' "$f" 2>/dev/null || echo 0)
 
@@ -193,6 +238,13 @@ jobs:
           cp merged-reports/all-xml/*.xml target/surefire-reports/
           mvn --no-transfer-progress surefire-report:report-only -Daggregate=true || true
 
+      # FIX: Genereaza raportul Allure combinat din toate shardurile
+      - name: Generate Allure report
+        run: |
+          mkdir -p target/allure-results
+          cp -r merged-allure-results/* target/allure-results/ 2>/dev/null || true
+          mvn allure:report || true
+
       - name: Upload merged report
         if: always()
         uses: actions/upload-artifact@v4
@@ -202,3 +254,4 @@ jobs:
             merged-reports/all-xml/
             merged-reports/SUMMARY.txt
             target/site/surefire-report.html
+            target/site/allure-maven-plugin/

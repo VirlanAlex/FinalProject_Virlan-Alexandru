@@ -20,6 +20,10 @@
         <log4j2.version>2.23.1</log4j2.version>
         <allure.version>2.27.0</allure.version>
         <aspectj.version>1.9.22</aspectj.version>
+
+        <!-- FIX: proprietate pentru suite XML — implicit testng.xml,
+             dar CI-ul poate suprascrie cu -Dtestng.suite=testng-shard.xml -->
+        <testng.suite>testng.xml</testng.suite>
     </properties>
 
     <dependencies>
@@ -96,20 +100,14 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
+                    <!-- FIX: referinta la proprietate — acum CI poate suprascrie -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${testng.suite}</suiteXmlFile>
                     </suiteXmlFiles>
                     <useFile>false</useFile>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     <printSummary>true</printSummary>
                     <trimStackTrace>false</trimStackTrace>
-
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.testng.AllureTestNg</value>
-                        </property>
-                    </properties>
 
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
